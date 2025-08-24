@@ -1,0 +1,4321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Agriculture Monitoring System - ElectroHub</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #7c3aed;
+            --success-color: #059669;
+            --warning-color: #f59e0b;
+            --error-color: #dc2626;
+            --info-color: #0ea5e9;
+            --text-dark: #1f2937;
+            --text-medium: #6b7280;
+            --text-light: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        /* Enhanced Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-medium);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        .project-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .project-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .project-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-medium);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .project-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .author-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 1rem;
+        }
+
+        .author-institution {
+            font-size: 0.875rem;
+            color: var(--text-medium);
+        }
+
+        .project-badges {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            transition: all 0.2s ease;
+        }
+
+        .badge:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .badge-featured {
+            background: linear-gradient(135deg, #fef3c7, #fbbf24);
+            color: #92400e;
+        }
+
+        .badge-verified {
+            background: linear-gradient(135deg, #dcfce7, #34d399);
+            color: #065f46;
+        }
+
+        .badge-difficulty {
+            background: linear-gradient(135deg, #dbeafe, #60a5fa);
+            color: #1e40af;
+        }
+
+        .project-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            padding: 0.875rem 1.5rem;
+            border-radius: var(--radius-lg);
+            text-decoration: none;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .btn-secondary {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .project-stats {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--text-medium);
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .stat-item i {
+            color: var(--primary-color);
+        }
+
+        /* Enhanced Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+        }
+
+        .content-area {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-section:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .sidebar-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            font-size: 1.125rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Enhanced Gallery */
+        .project-gallery {
+            margin-bottom: 3rem;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 450px;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+        }
+
+        .main-image:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: var(--radius-xl);
+        }
+
+        .image-placeholder {
+            color: var(--text-medium);
+            text-align: center;
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+
+        .thumbnail {
+            height: 90px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            color: var(--text-medium);
+            font-weight: 600;
+            border: 2px solid transparent;
+        }
+
+        .thumbnail:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .thumbnail.active {
+            border-color: var(--primary-color);
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+        }
+
+        /* Enhanced Navigation */
+        .section-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid var(--border-color);
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .nav-item {
+            padding: 0.875rem 1.5rem;
+            border-bottom: 3px solid transparent;
+            color: var(--text-medium);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            position: relative;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .nav-item:hover::before,
+        .nav-item.active::before {
+            opacity: 0.1;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .section-content {
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Enhanced Components */
+        .project-overview {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            color: var(--text-dark);
+        }
+
+        .project-overview p {
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .spec-item {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spec-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            opacity: 0.1;
+            border-radius: 0 var(--radius-lg) 0 100%;
+        }
+
+        .spec-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .spec-label {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .spec-value {
+            color: var(--text-medium);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* Enhanced Components List */
+        .components-list {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .components-title {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            color: var(--text-dark);
+        }
+
+        .component-item {
+            display: grid;
+            grid-template-columns: 2fr 80px 100px auto;
+            gap: 1.5rem;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .component-item:hover {
+            background: rgba(79, 70, 229, 0.05);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            margin: 0 -1.25rem;
+        }
+
+        .component-item:last-child {
+            border-bottom: none;
+        }
+
+        .component-name {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .component-specs {
+            font-size: 0.875rem;
+            color: var(--text-medium);
+        }
+
+        .component-price {
+            font-weight: 700;
+            color: var(--success-color);
+            font-size: 1rem;
+        }
+
+        .component-link {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .component-link:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Enhanced Code Sections */
+        .code-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #1f2937, #374151);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .code-title {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .code-copy {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .code-copy:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .code-block {
+            background: linear-gradient(135deg, #1f2937, #111827);
+            color: #e5e7eb;
+            padding: 1.5rem;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            box-shadow: var(--shadow-md);
+        }
+
+        .code-keyword { color: #60a5fa; }
+        .code-string { color: #34d399; }
+        .code-comment { color: #9ca3af; }
+        .code-function { color: #fbbf24; }
+
+        /* Enhanced Steps */
+        .step-by-step {
+            margin-bottom: 3rem;
+        }
+
+        .step {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border-radius: var(--radius-xl);
+            border-left: 6px solid var(--primary-color);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            z-index: -1;
+            border-radius: var(--radius-xl);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .step:hover::before {
+            opacity: 0.1;
+        }
+
+        .step:hover {
+            transform: translateX(8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-right: 1rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .step-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            font-size: 1.125rem;
+            color: var(--text-dark);
+        }
+
+        .step-content {
+            margin-left: 56px;
+            color: var(--text-medium);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        /* Enhanced Tags */
+        .tags-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Enhanced Related Projects */
+        .related-projects {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .related-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .related-item:hover {
+            background: rgba(79, 70, 229, 0.05);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .related-thumb {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--radius-lg);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .related-info {
+            flex: 1;
+        }
+
+        .related-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .related-author {
+            font-size: 0.75rem;
+            color: var(--text-medium);
+        }
+
+        /* Enhanced Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: var(--border-color);
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 85%;
+            border-radius: 9999px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            font-size: 0.875rem;
+            color: var(--text-medium);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            margin-top: 3rem;
+            border-top: 2px solid var(--border-color);
+            padding-top: 2.5rem;
+        }
+
+        .comment-form {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            padding: 2rem;
+            border-radius: var(--radius-xl);
+            margin-bottom: 2.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .comment-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1.25rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            font-family: inherit;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .comment-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .comment {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            border-radius: var(--radius-lg);
+            background: var(--bg-secondary);
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: bold;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .comment-date {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .comment-content {
+            color: var(--text-dark);
+            line-height: 1.7;
+            margin-left: 52px;
+            font-size: 0.875rem;
+        }
+
+        /* Enhanced Responsive Design */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .project-header {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .project-actions {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .section-nav {
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+            
+            .project-title {
+                font-size: 2rem;
+            }
+            
+            .tech-specs {
+                grid-template-columns: 1fr;
+            }
+            
+            .component-item {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+                text-align: center;
+            }
+            
+            .thumbnail-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .project-title {
+                font-size: 1.75rem;
+            }
+            
+            .content-area,
+            .sidebar-section {
+                padding: 1.5rem;
+            }
+            
+            .step-content {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+            
+            .step-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Enhanced Animations */
+        @keyframes slideInFromTop {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .header {
+            animation: slideInFromTop 0.8s ease-out;
+        }
+
+        .content-area {
+            animation: slideInFromLeft 0.8s ease-out 0.2s both;
+        }
+
+        .sidebar {
+            animation: slideInFromRight 0.8s ease-out 0.4s both;
+        }
+
+        /* Enhanced Interactive Elements */
+        .interactive-demo {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .sensor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .sensor-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sensor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .sensor-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .sensor-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .sensor-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .sensor-label {
+            font-size: 0.875rem;
+            color: var(--text-medium);
+            font-weight: 500;
+        }
+
+        .live-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 12px;
+            height: 12px;
+            background: var(--success-color);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        /* Enhanced Video Container */
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            background: linear-gradient(135deg, #000, #1f2937);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-xl);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .video-container:hover {
+            transform: scale(1.02);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .play-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .play-button i {
+            font-size: 2rem;
+            margin-left: 0.25rem;
+        }
+
+        /* Enhanced Schematic Viewer */
+        .schematic-viewer {
+            width: 100%;
+            height: 550px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .schematic-controls {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .schematic-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .schematic-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Enhanced Utility Classes */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-4px);
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+
+        /* Loading States */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, transparent 37%, #f0f0f0 63%);
+            background-size: 400% 100%;
+            animation: skeleton-loading 1.4s ease infinite;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: -100% 50%;
+            }
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--success-color), #10b981);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, var(--error-color), #ef4444);
+        }
+
+        .toast.warning {
+            background: linear-gradient(135deg, var(--warning-color), #f59e0b);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Enhanced Header -->
+        <header class="header">
+            <div class="breadcrumb">
+                <a href="#"><i class="fas fa-home"></i> ElectroHub</a> 
+                <span>›</span> 
+                <a href="#">Projects</a> 
+                <span>›</span> 
+                <a href="#">IoT</a>
+                <span>›</span>
+                <span>Smart Agriculture Monitoring</span>
+            </div>
+
+            <div class="project-header">
+                <div>
+                    <h1 class="project-title">Smart Agriculture Monitoring System</h1>
+                    <p class="project-subtitle">IoT-based crop monitoring with automated irrigation and mobile app control</p>
+                    
+                    <div class="project-meta">
+                        <div class="author-info">
+                            <div class="author-avatar">AK</div>
+                            <div class="author-details">
+                                <div class="author-name">Arjun Kumar</div>
+                                <div class="author-institution">KGEC - Electronics & Communication Engineering</div>
+                            </div>
+                        </div>
+                        
+                        <div class="project-badges">
+                            <span class="badge badge-featured">Featured</span>
+                            <span class="badge badge-verified">Verified</span>
+                            <span class="badge badge-difficulty">Intermediate</span>
+                        </div>
+                    </div>
+
+                    <div class="project-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>Published: Dec 15, 2024</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-eye"></i>
+                            <span>1,247 views</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span>89 likes</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-comments"></i>
+                            <span>23 comments</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-actions">
+                    <button class="btn btn-primary" onclick="toggleLike()">
+                        <i class="fas fa-star"></i> Like Project
+                    </button>
+                    <button class="btn btn-secondary" onclick="shareProject()">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                    <button class="btn btn-secondary" onclick="saveProject()">
+                        <i class="fas fa-bookmark"></i> Save
+                    </button>
+                    <button class="btn btn-secondary" onclick="reportProject()">
+                        <i class="fas fa-flag"></i> Report
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Enhanced Main Content Area -->
+            <div class="content-area">
+                <!-- Enhanced Project Gallery -->
+                <div class="project-gallery">
+                    <div class="main-image" id="mainImage">
+                        <div class="image-placeholder">
+                            <i class="fas fa-seedling" style="font-size: 3rem; margin-bottom: 1rem; color: var(--success-color);"></i><br>
+                            <strong>Smart Agriculture System Demo</strong><br>
+                            <small>Main project overview image</small>
+                        </div>
+                    </div>
+                    <div class="thumbnail-grid">
+                        <div class="thumbnail active" onclick="changeImage('setup')">
+                            <i class="fas fa-tools"></i><br>Setup
+                        </div>
+                        <div class="thumbnail" onclick="changeImage('sensors')">
+                            <i class="fas fa-microchip"></i><br>Sensors
+                        </div>
+                        <div class="thumbnail" onclick="changeImage('app')">
+                            <i class="fas fa-mobile-alt"></i><br>Mobile App
+                        </div>
+                        <div class="thumbnail" onclick="changeImage('dashboard')">
+                            <i class="fas fa-chart-line"></i><br>Dashboard
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Live Demo Section -->
+                <div class="interactive-demo">
+                    <h3><i class="fas fa-broadcast-tower"></i> Live Sensor Data</h3>
+                    <p style="color: var(--text-medium); margin-bottom: 1rem;">Real-time data from deployed system (simulated)</p>
+                    
+                    <div class="sensor-grid">
+                        <div class="sensor-card">
+                            <div class="live-indicator"></div>
+                            <div class="sensor-icon">
+                                <i class="fas fa-thermometer-half"></i>
+                            </div>
+                            <div class="sensor-value" id="temp-value">24.5°C</div>
+                            <div class="sensor-label">Temperature</div>
+                        </div>
+                        <div class="sensor-card">
+                            <div class="live-indicator"></div>
+                            <div class="sensor-icon">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <div class="sensor-value" id="humidity-value">68%</div>
+                            <div class="sensor-label">Humidity</div>
+                        </div>
+                        <div class="sensor-card">
+                            <div class="live-indicator"></div>
+                            <div class="sensor-icon">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <div class="sensor-value" id="soil-value">45%</div>
+                            <div class="sensor-label">Soil Moisture</div>
+                        </div>
+                        <div class="sensor-card">
+                            <div class="live-indicator"></div>
+                            <div class="sensor-icon">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <div class="sensor-value" id="light-value">78%</div>
+                            <div class="sensor-label">Light Level</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Section Navigation -->
+                <div class="section-nav">
+                    <div class="nav-item active" onclick="showSection('overview')">
+                        <i class="fas fa-info-circle"></i> Overview
+                    </div>
+                    <div class="nav-item" onclick="showSection('components')">
+                        <i class="fas fa-microchip"></i> Components
+                    </div>
+                    <div class="nav-item" onclick="showSection('schematics')">
+                        <i class="fas fa-sitemap"></i> Schematics
+                    </div>
+                    <div class="nav-item" onclick="showSection('code')">
+                        <i class="fas fa-code"></i> Source Code
+                    </div>
+                    <div class="nav-item" onclick="showSection('assembly')">
+                        <i class="fas fa-wrench"></i> Assembly
+                    </div>
+                    <div class="nav-item" onclick="showSection('testing')">
+                        <i class="fas fa-vial"></i> Testing
+                    </div>
+                    <div class="nav-item" onclick="showSection('demo')">
+                        <i class="fas fa-play"></i> Demo
+                    </div>
+                </div>
+
+                <!-- Overview Section -->
+                <div id="overview" class="section-content active">
+                    <div class="project-overview">
+                        <h3 style="margin-bottom: 1.5rem; color: var(--text-dark);">
+                            <i class="fas fa-leaf text-gradient"></i> Project Overview
+                        </h3>
+                        <p>
+                            The Smart Agriculture Monitoring System is an IoT-based solution designed to revolutionize traditional farming practices through real-time monitoring and automated control systems. This project addresses the critical need for efficient water usage and crop health monitoring in modern agriculture.
+                        </p>
+                        <p>
+                            Built around the ESP32 microcontroller, the system integrates multiple sensors to monitor soil moisture, ambient temperature, humidity, and light levels. The collected data is transmitted to a cloud platform for analysis and visualization through a custom mobile application.
+                        </p>
+                        <p>
+                            Key features include automated irrigation control, real-time alerts for abnormal conditions, historical data analysis, and remote monitoring capabilities accessible from anywhere with an internet connection.
+                        </p>
+                    </div>
+
+                    <div class="tech-specs">
+                        <div class="spec-item hover-lift">
+                            <div class="spec-label">
+                                <i class="fas fa-microchip"></i> Microcontroller
+                            </div>
+                            <div class="spec-value">ESP32 DevKit V1</div>
+                        </div>
+                        <div class="spec-item hover-lift">
+                            <div class="spec-label">
+                                <i class="fas fa-solar-panel"></i> Power Supply
+                            </div>
+                            <div class="spec-value">12V Solar Panel + Battery</div>
+                        </div>
+                        <div class="spec-item hover-lift">
+                            <div class="spec-label">
+                                <i class="fas fa-wifi"></i> Connectivity
+                            </div>
+                            <div class="spec-value">WiFi 802.11b/g/n</div>
+                        </div>
+                        <div class="spec-item hover-lift">
+                            <div class="spec-label">
+                                <i class="fas fa-thermometer-half"></i> Operating Range
+                            </div>
+                            <div class="spec-value">-10°C to 60°C</div>
+                        </div>
+                        <div class="spec-item hover-lift">
+                            <div class="spec-label">
+                                <i class="fas fa-database"></i> Data Storage
+                            </div>
+                            <div class="spec-value">Firebase Realtime Database</div>
+                        </div>
+                        <div class="spec-item hover-lift">
+                            <div class="spec-label">
+                                <i class="fas fa-mobile-alt"></i> Mobile App
+                            </div>
+                            <div class="spec-value">Flutter (Android/iOS)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Components Section -->
+                <div id="components" class="section-content">
+                    <div class="components-list">
+                        <h3 class="components-title">
+                            <i class="fas fa-tools"></i> Bill of Materials (BOM)
+                        </h3>
+                        <div style="font-size: 0.875rem; color: var(--text-medium); margin-bottom: 1.5rem; padding: 1rem; background: rgba(5, 150, 105, 0.1); border-radius: var(--radius-md); border-left: 4px solid var(--success-color);">
+                            <strong>Total estimated cost: ₹3,245</strong> | All components available in India
+                        </div>
+                        
+                        <div class="component-item" style="font-weight: 600; border-bottom: 2px solid var(--border-color); background: var(--bg-tertiary); margin: 0 -1.25rem; padding: 1.25rem;">
+                            <div>Component</div>
+                            <div>Quantity</div>
+                            <div>Price (₹)</div>
+                            <div>Source</div>
+                        </div>
+
+                        <div class="component-item">
+                            <div>
+                                <div class="component-name">
+                                    <i class="fas fa-microchip" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                                    ESP32 DevKit V1
+                                </div>
+                                <div class="component-specs">38-pin development board with WiFi & Bluetooth</div>
+                            </div>
+                            <div>1</div>
+                            <div class="component-price">₹450</div>
+                            <a href="#" class="component-link">
+                                <i class="fas fa-shopping-cart"></i> Buy
+                            </a>
+                        </div>
+
+                        <div class="component-item">
+                            <div>
+                                <div class="component-name">
+                                    <i class="fas fa-thermometer-half" style="color: var(--error-color); margin-right: 0.5rem;"></i>
+                                    DHT22 Temperature & Humidity Sensor
+                                </div>
+                                <div class="component-specs">Digital sensor with ±0.5°C accuracy</div>
+                            </div>
+                            <div>1</div>
+                            <div class="component-price">₹320</div>
+                            <a href="#" class="component-link">
+                                <i class="fas fa-shopping-cart"></i> Buy
+                            </a>
+                        </div>
+
+                        <div class="component-item">
+                            <div>
+                                <div class="component-name">
+                                    <i class="fas fa-tint" style="color: var(--info-color); margin-right: 0.5rem;"></i>
+                                    Soil Moisture Sensor
+                                </div>
+                                <div class="component-specs">Capacitive sensor with corrosion resistance</div>
+                            </div>
+                            <div>3</div>
+                            <div class="component-price">₹180 each</div>
+                            <a href="#" class="component-link">
+                                <i class="fas fa-shopping-cart"></i> Buy
+                            </a>
+                        </div>
+
+                        <div class="component-item">
+                            <div>
+                                <div class="component-name">
+                                    <i class="fas fa-sun" style="color: var(--warning-color); margin-right: 0.5rem;"></i>
+                                    LDR (Light Dependent Resistor)
+                                </div>
+                                <div class="component-specs">GL5528 photoresistor for light sensing</div>
+                            </div>
+                            <div>1</div>
+                            <div class="component-price">₹15</div>
+                            <a href="#" class="component-link">
+                                <i class="fas fa-shopping-cart"></i> Buy
+                            </a>
+                        </div>
+
+                        <div class="component-item">
+                            <div>
+                                <div class="component-name">
+                                    <i class="fas fa-toggle-on" style="color: var(--secondary-color); margin-right: 0.5rem;"></i>
+                                    Relay Module (4-Channel)
+                                </div>
+                                <div class="component-specs">5V relay module for irrigation control</div>
+                            </div>
+                            <div>1</div>
+                            <div class="component-price">₹280</div>
+                            <a href="#" class="component-link">
+                                <i class="fas fa-shopping-cart"></i> Buy
+                            </a>
+                        </div>
+
+                        <div class="component-item">
+                            <div>
+                                <div class="component-name">
+                                    <i class="fas fa-shower" style="color: var(--info-color); margin-right: 0.5rem;"></i>
+                                    12V Water Pump
+                                </div>
+                                <div class="component-specs">Submersible mini pump, 3-6L/min flow rate</div>
+                            </div>
+                            <div>2</div>
+                            <div class="component-price">₹350 each</div>
+                            <a href="#" class="component-link">
+                                <i class="fas fa-shopping-cart"></i> Buy
+                            </a>
+                        </div>
+
+                        <div class="component-item">
+                            <div>
+                                <div class="component-name">
+                                    <i class="fas fa-solar-panel" style="color: var(--warning-color); margin-right: 0.5rem;"></i>
+                                    Solar Panel
+                                </div>
+                                <div class="component-specs">12V 10W polycrystalline panel</div>
+                            </div>
+                            <div>1</div>
+                            <div class="component-price">₹850</div>
+                            <a href="#" class="component-link">
+                                <i class="fas fa-shopping-cart"></i> Buy
+                            </a>
+                        </div>
+
+                        <div class="component-item">
+                            <div>
+                                <div class="component-name">
+                                    <i class="fas fa-battery-full" style="color: var(--success-color); margin-right: 0.5rem;"></i>
+                                    12V 7Ah Battery
+                                </div>
+                                <div class="component-specs">Sealed lead-acid battery for backup power</div>
+                            </div>
+                            <div>1</div>
+                            <div class="component-price">₹650</div>
+                            <a href="#" class="component-link">
+                                <i class="fas fa-shopping-cart"></i> Buy
+                            </a>
+                        </div>
+
+                        <div class="component-item">
+                            <div>
+                                <div class="component-name">
+                                    <i class="fas fa-box" style="color: var(--text-medium); margin-right: 0.5rem;"></i>
+                                    Miscellaneous
+                                </div>
+                                <div class="component-specs">Breadboard, jumper wires, resistors, enclosure</div>
+                            </div>
+                            <div>1 set</div>
+                            <div class="component-price">₹160</div>
+                            <a href="#" class="component-link">
+                                <i class="fas fa-shopping-cart"></i> Buy
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Schematics Section -->
+                <div id="schematics" class="section-content">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--text-dark);">
+                        <i class="fas fa-sitemap text-gradient"></i> Circuit Schematics & Block Diagram
+                    </h3>
+                    
+                    <div class="schematic-viewer">
+                        <div class="schematic-controls">
+                            <button class="schematic-btn">
+                                <i class="fas fa-search-plus"></i> Zoom In
+                            </button>
+                            <button class="schematic-btn">
+                                <i class="fas fa-search-minus"></i> Zoom Out
+                            </button>
+                            <button class="schematic-btn">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                        <div style="text-align: center; color: var(--text-medium);">
+                            <i class="fas fa-project-diagram" style="font-size: 4rem; color: var(--primary-color); margin-bottom: 1rem;"></i><br>
+                            <strong style="font-size: 1.25rem;">System Block Diagram</strong><br>
+                            <small>ESP32 → Sensors → Cloud → Mobile App</small><br><br>
+                            
+                            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 2; background: white; padding: 1.5rem; border-radius: var(--radius-lg); margin: 1rem; box-shadow: var(--shadow-sm);">
+                                [Sensors] → [ESP32] → [WiFi] → [Firebase] → [Mobile App]<br>
+                                    ↓           ↓                              ↑<br>
+                                [Relays] → [Pumps]                    [User Control]
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2rem;">
+                        <h4 style="color: var(--text-dark); margin-bottom: 1rem;">
+                            <i class="fas fa-plug"></i> Pin Configuration:
+                        </h4>
+                        <div style="background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary)); padding: 1.5rem; border-radius: var(--radius-lg); font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; line-height: 1.8; border: 1px solid var(--border-color);">
+                            <div style="color: var(--success-color);">• DHT22 Data Pin → GPIO 4</div>
+                            <div style="color: var(--info-color);">• Soil Moisture Sensor 1 → GPIO 34 (ADC)</div>
+                            <div style="color: var(--info-color);">• Soil Moisture Sensor 2 → GPIO 35 (ADC)</div>
+                            <div style="color: var(--info-color);">• Soil Moisture Sensor 3 → GPIO 32 (ADC)</div>
+                            <div style="color: var(--warning-color);">• LDR → GPIO 33 (ADC)</div>
+                            <div style="color: var(--secondary-color);">• Relay Module → GPIO 16, 17, 5, 18</div>
+                            <div style="color: var(--text-dark);">• Power: 3.3V and GND connections</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Source Code Section -->
+                <div id="code" class="section-content">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--text-dark);">
+                        <i class="fas fa-code text-gradient"></i> Source Code
+                    </h3>
+                    
+                    <div class="code-section">
+                        <div class="code-header">
+                            <div class="code-title">
+                                <i class="fas fa-microchip"></i> ESP32 Main Code (main.cpp)
+                            </div>
+                            <button class="code-copy" onclick="copyCode('esp32-main')">
+                                <i class="fas fa-copy"></i> Copy Code
+                            </button>
+                        </div>
+                        <div class="code-block" id="esp32-main">
+<span class="code-comment">// Smart Agriculture Monitoring System - ESP32 Code</span>
+<span class="code-comment">// Author: Arjun Kumar, KGEC ECE</span>
+<span class="code-comment">// Enhanced version with improved error handling and features</span>
+
+<span class="code-keyword">#include</span> <span class="code-string">&lt;WiFi.h&gt;</span>
+<span class="code-keyword">#include</span> <span class="code-string">&lt;FirebaseESP32.h&gt;</span>
+<span class="code-keyword">#include</span> <span class="code-string">&lt;DHT.h&gt;</span>
+<span class="code-keyword">#include</span> <span class="code-string">&lt;ArduinoJson.h&gt;</span>
+<span class="code-keyword">#include</span> <span class="code-string">&lt;WiFiManager.h&gt;</span>
+<span class="code-keyword">#include</span> <span class="code-string">&lt;EEPROM.h&gt;</span>
+
+<span class="code-comment">// WiFi and Firebase Configuration</span>
+<span class="code-keyword">const char*</span> firebaseHost = <span class="code-string">"smart-agriculture-iot.firebaseio.com"</span>;
+<span class="code-keyword">const char*</span> firebaseAuth = <span class="code-string">"YOUR_FIREBASE_AUTH_TOKEN"</span>;
+
+<span class="code-comment">// Pin Definitions</span>
+<span class="code-keyword">#define</span> DHT_PIN 4
+<span class="code-keyword">#define</span> DHT_TYPE DHT22
+<span class="code-keyword">#define</span> SOIL1_PIN 34
+<span class="code-keyword">#define</span> SOIL2_PIN 35
+<span class="code-keyword">#define</span> SOIL3_PIN 32
+<span class="code-keyword">#define</span> LDR_PIN 33
+<span class="code-keyword">#define</span> RELAY1_PIN 16
+<span class="code-keyword">#define</span> RELAY2_PIN 17
+<span class="code-keyword">#define</span> RELAY3_PIN 5
+<span class="code-keyword">#define</span> RELAY4_PIN 18
+<span class="code-keyword">#define</span> STATUS_LED 2
+<span class="code-keyword">#define</span> BUTTON_PIN 0
+
+<span class="code-comment">// Sensor calibration values</span>
+<span class="code-keyword">#define</span> SOIL_DRY_VALUE 3000
+<span class="code-keyword">#define</span> SOIL_WET_VALUE 1500
+<span class="code-keyword">#define</span> MOISTURE_THRESHOLD_LOW 30
+<span class="code-keyword">#define</span> MOISTURE_THRESHOLD_HIGH 70
+
+<span class="code-comment">// Initialize sensors and Firebase</span>
+DHT dht(DHT_PIN, DHT_TYPE);
+FirebaseData firebaseData;
+FirebaseConfig config;
+FirebaseAuth auth;
+
+<span class="code-comment">// Global variables</span>
+<span class="code-keyword">unsigned long</span> lastSensorRead = 0;
+<span class="code-keyword">unsigned long</span> lastFirebaseUpdate = 0;
+<span class="code-keyword">unsigned long</span> lastWiFiCheck = 0;
+<span class="code-keyword">const unsigned long</span> SENSOR_INTERVAL = 10000; <span class="code-comment">// 10 seconds</span>
+<span class="code-keyword">const unsigned long</span> FIREBASE_INTERVAL = 30000; <span class="code-comment">// 30 seconds</span>
+<span class="code-keyword">const unsigned long</span> WIFI_CHECK_INTERVAL = 60000; <span class="code-comment">// 1 minute</span>
+
+<span class="code-keyword">bool</span> autoIrrigation = <span class="code-keyword">true</span>;
+<span class="code-keyword">bool</span> systemActive = <span class="code-keyword">true</span>;
+<span class="code-keyword">int</span> errorCount = 0;
+
+<span class="code-comment">// Sensor data structure</span>
+<span class="code-keyword">struct</span> SensorData {
+  <span class="code-keyword">float</span> temperature;
+  <span class="code-keyword">float</span> humidity;
+  <span class="code-keyword">float</span> soilMoisture1;
+  <span class="code-keyword">float</span> soilMoisture2;
+  <span class="code-keyword">float</span> soilMoisture3;
+  <span class="code-keyword">float</span> lightLevel;
+  <span class="code-keyword">float</span> batteryVoltage;
+  <span class="code-keyword">bool</span> pumpStatus[4];
+};
+
+SensorData currentData;
+
+<span class="code-keyword">void</span> setup() {
+  Serial.begin(115200);
+  Serial.println(<span class="code-string">"Smart Agriculture System Starting..."</span>);
+  
+  <span class="code-comment">// Initialize EEPROM for storing settings</span>
+  EEPROM.begin(512);
+  
+  <span class="code-comment">// Initialize pins</span>
+  initializePins();
+  
+  <span class="code-comment">// Initialize DHT sensor</span>
+  dht.begin();
+  
+  <span class="code-comment">// Initialize WiFi with WiFiManager for easy configuration</span>
+  initializeWiFi();
+  
+  <span class="code-comment">// Initialize Firebase</span>
+  initializeFirebase();
+  
+  <span class="code-comment">// Load saved settings</span>
+  loadSettings();
+  
+  <span class="code-comment">// Initial sensor reading</span>
+  readSensors();
+  
+  Serial.println(<span class="code-string">"System initialized successfully!"</span>);
+  blinkStatusLED(3); <span class="code-comment">// Success indication</span>
+}
+
+<span class="code-keyword">void</span> loop() {
+  <span class="code-keyword">unsigned long</span> currentTime = millis();
+  
+  <span class="code-comment">// Check WiFi connection periodically</span>
+  <span class="code-keyword">if</span> (currentTime - lastWiFiCheck > WIFI_CHECK_INTERVAL) {
+    checkWiFiConnection();
+    lastWiFiCheck = currentTime;
+  }
+  
+  <span class="code-comment">// Read sensors</span>
+  <span class="code-keyword">if</span> (currentTime - lastSensorRead > SENSOR_INTERVAL) {
+    readSensors();
+    lastSensorRead = currentTime;
+  }
+  
+  <span class="code-comment">// Update Firebase</span>
+  <span class="code-keyword">if</span> (currentTime - lastFirebaseUpdate > FIREBASE_INTERVAL) {
+    uploadSensorData();
+    checkControlCommands();
+    lastFirebaseUpdate = currentTime;
+  }
+  
+  <span class="code-comment">// Handle automatic irrigation</span>
+  <span class="code-keyword">if</span> (autoIrrigation) {
+    handleAutoIrrigation();
+  }
+  
+  <span class="code-comment">// Handle button press for manual control</span>
+  handleButtonPress();
+  
+  <span class="code-comment">// Update status LED</span>
+  updateStatusLED();
+  
+  delay(100);
+}
+
+<span class="code-keyword">void</span> <span class="code-function">initializePins</span>() {
+  <span class="code-comment">// Initialize relay pins</span>
+  pinMode(RELAY1_PIN, OUTPUT);
+  pinMode(RELAY2_PIN, OUTPUT);
+  pinMode(RELAY3_PIN, OUTPUT);
+  pinMode(RELAY4_PIN, OUTPUT);
+  
+  <span class="code-comment">// Initialize control pins</span>
+  pinMode(STATUS_LED, OUTPUT);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  
+  <span class="code-comment">// Turn off all relays initially (HIGH = OFF for most relay modules)</span>
+  digitalWrite(RELAY1_PIN, HIGH);
+  digitalWrite(RELAY2_PIN, HIGH);
+  digitalWrite(RELAY3_PIN, HIGH);
+  digitalWrite(RELAY4_PIN, HIGH);
+  
+  <span class="code-comment">// Initialize pump status</span>
+  <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = 0; i < 4; i++) {
+    currentData.pumpStatus[i] = <span class="code-keyword">false</span>;
+  }
+}
+
+<span class="code-keyword">void</span> <span class="code-function">initializeWiFi</span>() {
+  WiFiManager wifiManager;
+  
+  <span class="code-comment">// Uncomment to reset settings for testing</span>
+  <span class="code-comment">// wifiManager.resetSettings();</span>
+  
+  <span class="code-comment">// Set custom AP name and password</span>
+  wifiManager.autoConnect(<span class="code-string">"SmartAgri-Setup"</span>, <span class="code-string">"agriculture123"</span>);
+  
+  Serial.println(<span class="code-string">"WiFi connected!"</span>);
+  Serial.print(<span class="code-string">"IP address: "</span>);
+  Serial.println(WiFi.localIP());
+}
+
+<span class="code-keyword">void</span> <span class="code-function">initializeFirebase</span>() {
+  config.host = firebaseHost;
+  config.signer.tokens.legacy_token = firebaseAuth;
+  
+  Firebase.begin(&config, &auth);
+  Firebase.reconnectWiFi(<span class="code-keyword">true</span>);
+  
+  <span class="code-comment">// Test Firebase connection</span>
+  <span class="code-keyword">if</span> (Firebase.ready()) {
+    Serial.println(<span class="code-string">"Firebase connected successfully!"</span>);
+    Firebase.setString(firebaseData, <span class="code-string">"/system/status"</span>, <span class="code-string">"online"</span>);
+  } <span class="code-keyword">else</span> {
+    Serial.println(<span class="code-string">"Firebase connection failed!"</span>);
+    errorCount++;
+  }
+}
+
+<span class="code-keyword">void</span> <span class="code-function">readSensors</span>() {
+  <span class="code-comment">// Read DHT22 sensor with error checking</span>
+  <span class="code-keyword">float</span> temp = dht.readTemperature();
+  <span class="code-keyword">float</span> hum = dht.readHumidity();
+  
+  <span class="code-keyword">if</span> (isnan(temp) || isnan(hum)) {
+    Serial.println(<span class="code-string">"DHT sensor error!"</span>);
+    errorCount++;
+    <span class="code-comment">// Use last known values or defaults</span>
+    temp = currentData.temperature != 0 ? currentData.temperature : 25.0;
+    hum = currentData.humidity != 0 ? currentData.humidity : 50.0;
+  } <span class="code-keyword">else</span> {
+    currentData.temperature = temp;
+    currentData.humidity = hum;
+  }
+  
+  <span class="code-comment">// Read soil moisture sensors with calibration</span>
+  <span class="code-keyword">int</span> soil1Raw = analogRead(SOIL1_PIN);
+  <span class="code-keyword">int</span> soil2Raw = analogRead(SOIL2_PIN);
+  <span class="code-keyword">int</span> soil3Raw = analogRead(SOIL3_PIN);
+  
+  currentData.soilMoisture1 = mapFloat(soil1Raw, SOIL_DRY_VALUE, SOIL_WET_VALUE, 0, 100);
+  currentData.soilMoisture2 = mapFloat(soil2Raw, SOIL_DRY_VALUE, SOIL_WET_VALUE, 0, 100);
+  currentData.soilMoisture3 = mapFloat(soil3Raw, SOIL_DRY_VALUE, SOIL_WET_VALUE, 0, 100);
+  
+  <span class="code-comment">// Constrain values to 0-100 range</span>
+  currentData.soilMoisture1 = constrain(currentData.soilMoisture1, 0, 100);
+  currentData.soilMoisture2 = constrain(currentData.soilMoisture2, 0, 100);
+  currentData.soilMoisture3 = constrain(currentData.soilMoisture3, 0, 100);
+  
+  <span class="code-comment">// Read light sensor</span>
+  <span class="code-keyword">int</span> lightRaw = analogRead(LDR_PIN);
+  currentData.lightLevel = map(lightRaw, 0, 4095, 0, 100);
+  
+  <span class="code-comment">// Read battery voltage (assuming voltage divider)</span>
+  <span class="code-comment">// This assumes a voltage divider to measure 12V battery with ESP32's 3.3V ADC</span>
+  <span class="code-keyword">int</span> batteryRaw = analogRead(A0); <span class="code-comment">// Assuming A0 is connected to voltage divider</span>
+  currentData.batteryVoltage = (batteryRaw * 3.3 / 4095.0) * 4; <span class="code-comment">// Adjust multiplier based on voltage divider ratio</span>
+  
+  <span class="code-comment">// Print sensor readings</span>
+  Serial.println(<span class="code-string">"=== Sensor Readings ==="</span>);
+  Serial.printf(<span class="code-string">"Temperature: %.1f°C\n"</span>, currentData.temperature);
+  Serial.printf(<span class="code-string">"Humidity: %.1f%%\n"</span>, currentData.humidity);
+  Serial.printf(<span class="code-string">"Soil Moisture 1: %.1f%%\n"</span>, currentData.soilMoisture1);
+  Serial.printf(<span class="code-string">"Soil Moisture 2: %.1f%%\n"</span>, currentData.soilMoisture2);
+  Serial.printf(<span class="code-string">"Soil Moisture 3: %.1f%%\n"</span>, currentData.soilMoisture3);
+  Serial.printf(<span class="code-string">"Light Level: %.1f%%\n"</span>, currentData.lightLevel);
+  Serial.printf(<span class="code-string">"Battery Voltage: %.2fV\n"</span>, currentData.batteryVoltage);
+}
+
+<span class="code-keyword">void</span> <span class="code-function">uploadSensorData</span>() {
+  <span class="code-keyword">if</span> (!Firebase.ready() || WiFi.status() != WL_CONNECTED) {
+    Serial.println(<span class="code-string">"Firebase not ready or WiFi disconnected"</span>);
+    errorCount++;
+    <span class="code-keyword">return</span>;
+  }
+  
+  <span class="code-comment">// Create JSON object for current readings</span>
+  FirebaseJson json;
+  
+  json.set(<span class="code-string">"timestamp"</span>, millis());
+  json.set(<span class="code-string">"temperature"</span>, currentData.temperature);
+  json.set(<span class="code-string">"humidity"</span>, currentData.humidity);
+  json.set(<span class="code-string">"soil_moisture_1"</span>, currentData.soilMoisture1);
+  json.set(<span class="code-string">"soil_moisture_2"</span>, currentData.soilMoisture2);
+  json.set(<span class="code-string">"soil_moisture_3"</span>, currentData.soilMoisture3);
+  json.set(<span class="code-string">"light_level"</span>, currentData.lightLevel);
+  json.set(<span class="code-string">"battery_voltage"</span>, currentData.batteryVoltage);
+  json.set(<span class="code-string">"system_status"</span>, systemActive ? <span class="code-string">"active"</span> : <span class="code-string">"inactive"</span>);
+  json.set(<span class="code-string">"error_count"</span>, errorCount);
+  
+  <span class="code-comment">// Add pump status</span>
+  FirebaseJson pumpJson;
+  <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = 0; i < 4; i++) {
+    pumpJson.set(String(<span class="code-string">"pump_"</span>) + String(i + 1), currentData.pumpStatus[i]);
+  }
+  json.set(<span class="code-string">"pumps"</span>, pumpJson);
+  
+  <span class="code-comment">// Upload current data</span>
+  <span class="code-keyword">if</span> (Firebase.setJSON(firebaseData, <span class="code-string">"/sensors/current"</span>, json)) {
+    Serial.println(<span class="code-string">"Data uploaded successfully"</span>);
+    
+    <span class="code-comment">// Also store in historical data</span>
+    String historyPath = <span class="code-string">"/sensors/history/"</span> + String(millis());
+    Firebase.setJSON(firebaseData, historyPath, json);
+    
+    errorCount = max(0, errorCount - 1); <span class="code-comment">// Reduce error count on successful upload</span>
+  } <span class="code-keyword">else</span> {
+    Serial.println(<span class="code-string">"Upload failed: "</span> + firebaseData.errorReason());
+    errorCount++;
+  }
+}
+
+<span class="code-keyword">void</span> <span class="code-function">checkControlCommands</span>() {
+  <span class="code-keyword">if</span> (!Firebase.ready()) <span class="code-keyword">return</span>;
+  
+  <span class="code-comment">// Check for manual pump control commands</span>
+  <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = 1; i <= 4; i++) {
+    String pumpPath = <span class="code-string">"/control/pump"</span> + String(i);
+    <span class="code-keyword">if</span> (Firebase.getString(firebaseData, pumpPath)) {
+      String command = firebaseData.stringData();
+      <span class="code-keyword">bool</span> turnOn = (command == <span class="code-string">"ON"</span>);
+      controlPump(i - 1, turnOn);
+    }
+  }
+  
+  <span class="code-comment">// Check for system settings</span>
+  <span class="code-keyword">if</span> (Firebase.getBool(firebaseData, <span class="code-string">"/control/auto_irrigation"</span>)) {
+    autoIrrigation = firebaseData.boolData();
+  }
+  
+  <span class="code-keyword">if</span> (Firebase.getBool(firebaseData, <span class="code-string">"/control/system_active"</span>)) {
+    systemActive = firebaseData.boolData();
+  }
+  
+  <span class="code-comment">// Check for reset command</span>
+  <span class="code-keyword">if</span> (Firebase.getString(firebaseData, <span class="code-string">"/control/reset"</span>)) {
+    String resetCmd = firebaseData.stringData();
+    <span class="code-keyword">if</span> (resetCmd == <span class="code-string">"RESET"</span>) {
+      Firebase.setString(firebaseData, <span class="code-string">"/control/reset"</span>, <span class="code-string">"COMPLETE"</span>);
+      ESP.restart();
+    }
+  }
+}
+
+<span class="code-keyword">void</span> <span class="code-function">handleAutoIrrigation</span>() {
+  <span class="code-keyword">if</span> (!systemActive) <span class="code-keyword">return</span>;
+  
+  <span class="code-comment">// Calculate average soil moisture</span>
+  <span class="code-keyword">float</span> avgMoisture = (currentData.soilMoisture1 + currentData.soilMoisture2 + currentData.soilMoisture3) / 3.0;
+  
+  <span class="code-comment">// Auto irrigation logic</span>
+  <span class="code-keyword">if</span> (avgMoisture < MOISTURE_THRESHOLD_LOW) {
+    <span class="code-comment">// Soil is too dry, start irrigation</span>
+    <span class="code-keyword">if</span> (!currentData.pumpStatus[0]) { <span class="code-comment">// If pump 1 is not already running</span>
+      controlPump(0, <span class="code-keyword">true</span>);
+      Serial.println(<span class="code-string">"Auto irrigation: ON (Soil too dry)"</span>);
+      
+      <span class="code-comment">// Send alert</span>
+      <span class="code-keyword">if</span> (Firebase.ready()) {
+        Firebase.setString(firebaseData, <span class="code-string">"/alerts/irrigation"</span>, <span class="code-string">"AUTO_ON"</span>);
+        Firebase.setFloat(firebaseData, <span class="code-string">"/alerts/moisture_level"</span>, avgMoisture);
+      }
+    }
+  } 
+  <span class="code-keyword">else if</span> (avgMoisture > MOISTURE_THRESHOLD_HIGH) {
+    <span class="code-comment">// Soil is adequately moist, stop irrigation</span>
+    <span class="code-keyword">if</span> (currentData.pumpStatus[0]) { <span class="code-comment">// If pump 1 is running</span>
+      controlPump(0, <span class="code-keyword">false</span>);
+      Serial.println(<span class="code-string">"Auto irrigation: OFF (Soil adequately moist)"</span>);
+      
+      <span class="code-comment">// Send alert</span>
+      <span class="code-keyword">if</span> (Firebase.ready()) {
+        Firebase.setString(firebaseData, <span class="code-string">"/alerts/irrigation"</span>, <span class="code-string">"AUTO_OFF"</span>);
+      }
+    }
+  }
+  
+  <span class="code-comment">// Additional safety checks</span>
+  <span class="code-keyword">if</span> (currentData.batteryVoltage < 10.5) { <span class="code-comment">// Low battery protection</span>
+    <span class="code-comment">// Turn off all pumps to save battery</span>
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = 0; i < 4; i++) {
+      <span class="code-keyword">if</span> (currentData.pumpStatus[i]) {
+        controlPump(i, <span class="code-keyword">false</span>);
+      }
+    }
+    
+    <span class="code-keyword">if</span> (Firebase.ready()) {
+      Firebase.setString(firebaseData, <span class="code-string">"/alerts/battery"</span>, <span class="code-string">"LOW_BATTERY"</span>);
+    }
+    
+    Serial.println(<span class="code-string">"Low battery detected, pumps disabled"</span>);
+  }
+}
+
+<span class="code-keyword">void</span> <span class="code-function">controlPump</span>(<span class="code-keyword">int</span> pumpIndex, <span class="code-keyword">bool</span> turnOn) {
+  <span class="code-keyword">if</span> (pumpIndex < 0 || pumpIndex >= 4) <span class="code-keyword">return</span>;
+  
+  <span class="code-keyword">int</span> relayPins[] = {RELAY1_PIN, RELAY2_PIN, RELAY3_PIN, RELAY4_PIN};
+  
+  <span class="code-comment">// Control relay (LOW = ON, HIGH = OFF for most relay modules)</span>
+  digitalWrite(relayPins[pumpIndex], turnOn ? LOW : HIGH);
+  currentData.pumpStatus[pumpIndex] = turnOn;
+  
+  Serial.printf(<span class="code-string">"Pump %d: %s\n"</span>, pumpIndex + 1, turnOn ? <span class="code-string">"ON"</span> : <span class="code-string">"OFF"</span>);
+}
+
+<span class="code-comment">// Additional utility functions...</span>
+<span class="code-keyword">float</span> <span class="code-function">mapFloat</span>(<span class="code-keyword">float</span> x, <span class="code-keyword">float</span> in_min, <span class="code-keyword">float</span> in_max, <span class="code-keyword">float</span> out_min, <span class="code-keyword">float</span> out_max) {
+  <span class="code-keyword">return</span> (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+<span class="code-keyword">void</span> <span class="code-function">checkWiFiConnection</span>() {
+  <span class="code-keyword">if</span> (WiFi.status() != WL_CONNECTED) {
+    Serial.println(<span class="code-string">"WiFi disconnected, attempting reconnection..."</span>);
+    WiFi.reconnect();
+    
+    <span class="code-comment">// Wait up to 10 seconds for reconnection</span>
+    <span class="code-keyword">int</span> attempts = 0;
+    <span class="code-keyword">while</span> (WiFi.status() != WL_CONNECTED && attempts < 20) {
+      delay(500);
+      Serial.print(<span class="code-string">"."</span>);
+      attempts++;
+    }
+    
+    <span class="code-keyword">if</span> (WiFi.status() == WL_CONNECTED) {
+      Serial.println(<span class="code-string">"\nWiFi reconnected!"</span>);
+      errorCount = max(0, errorCount - 2);
+    } <span class="code-keyword">else</span> {
+      Serial.println(<span class="code-string">"\nWiFi reconnection failed!"</span>);
+      errorCount++;
+    }
+  }
+}
+
+<span class="code-keyword">void</span> <span class="code-function">handleButtonPress</span>() {
+  <span class="code-keyword">static</span> <span class="code-keyword">unsigned long</span> lastButtonPress = 0;
+  <span class="code-keyword">static</span> <span class="code-keyword">bool</span> lastButtonState = HIGH;
+  
+  <span class="code-keyword">bool</span> currentButtonState = digitalRead(BUTTON_PIN);
+  
+  <span class="code-keyword">if</span> (currentButtonState == LOW && lastButtonState == HIGH) {
+    <span class="code-keyword">if</span> (millis() - lastButtonPress > 200) { <span class="code-comment">// Debounce</span>
+      <span class="code-comment">// Toggle first pump manually</span>
+      controlPump(0, !currentData.pumpStatus[0]);
+      lastButtonPress = millis();
+    }
+  }
+  
+  lastButtonState = currentButtonState;
+}
+
+<span class="code-keyword">void</span> <span class="code-function">updateStatusLED</span>() {
+  <span class="code-keyword">static</span> <span class="code-keyword">unsigned long</span> lastBlink = 0;
+  <span class="code-keyword">static</span> <span class="code-keyword">bool</span> ledState = <span class="code-keyword">false</span>;
+  
+  <span class="code-keyword">if</span> (millis() - lastBlink > 1000) { <span class="code-comment">// Blink every second</span>
+    <span class="code-keyword">if</span> (WiFi.status() == WL_CONNECTED && Firebase.ready() && errorCount < 5) {
+      <span class="code-comment">// System healthy - solid LED</span>
+      digitalWrite(STATUS_LED, HIGH);
+    } <span class="code-keyword">else</span> {
+      <span class="code-comment">// System issues - blinking LED</span>
+      ledState = !ledState;
+      digitalWrite(STATUS_LED, ledState ? HIGH : LOW);
+    }
+    lastBlink = millis();
+  }
+}
+
+<span class="code-keyword">void</span> <span class="code-function">blinkStatusLED</span>(<span class="code-keyword">int</span> times) {
+  <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = 0; i < times; i++) {
+    digitalWrite(STATUS_LED, HIGH);
+    delay(200);
+    digitalWrite(STATUS_LED, LOW);
+    delay(200);
+  }
+}
+
+<span class="code-keyword">void</span> <span class="code-function">loadSettings</span>() {
+  <span class="code-comment">// Load settings from EEPROM</span>
+  autoIrrigation = EEPROM.read(0) == 1;
+  systemActive = EEPROM.read(1) == 1;
+  
+  Serial.println(<span class="code-string">"Settings loaded from EEPROM"</span>);
+}
+
+<span class="code-keyword">void</span> <span class="code-function">saveSettings</span>() {
+  <span class="code-comment">// Save settings to EEPROM</span>
+  EEPROM.write(0, autoIrrigation ? 1 : 0);
+  EEPROM.write(1, systemActive ? 1 : 0);
+  EEPROM.commit();
+  
+  Serial.println(<span class="code-string">"Settings saved to EEPROM"</span>);
+}
+                        </div>
+                    </div>
+
+                    <div class="code-section">
+                        <div class="code-header">
+                            <div class="code-title">
+                                <i class="fas fa-mobile-alt"></i> Mobile App (Flutter - main.dart)
+                            </div>
+                            <button class="code-copy" onclick="copyCode('flutter-main')">
+                                <i class="fas fa-copy"></i> Copy Code
+                            </button>
+                        </div>
+                        <div class="code-block" id="flutter-main">
+<span class="code-keyword">import</span> <span class="code-string">'package:flutter/material.dart'</span>;
+<span class="code-keyword">import</span> <span class="code-string">'package:firebase_core/firebase_core.dart'</span>;
+<span class="code-keyword">import</span> <span class="code-string">'package:firebase_database/firebase_database.dart'</span>;
+<span class="code-keyword">import</span> <span class="code-string">'package:fl_chart/fl_chart.dart'</span>;
+<span class="code-keyword">import</span> <span class="code-string">'package:flutter/services.dart'</span>;
+<span class="code-keyword">import</span> <span class="code-string">'dart:async'</span>;
+
+<span class="code-keyword">void</span> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(SmartAgricultureApp());
+}
+
+<span class="code-keyword">class</span> SmartAgricultureApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    <span class="code-keyword">return</span> MaterialApp(
+      title: <span class="code-string">'Smart Agriculture'</span>,
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        primaryColor: Color(0xFF4F46E5),
+        accentColor: Color(0xFF7C3AED),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: <span class="code-string">'Inter'</span>,
+      ),
+      home: SplashScreen(),
+      routes: {
+        <span class="code-string">'/dashboard'</span>: (context) => DashboardScreen(),
+        <span class="code-string">'/settings'</span>: (context) => SettingsScreen(),
+        <span class="code-string">'/history'</span>: (context) => HistoryScreen(),
+      },
+    );
+  }
+}
+
+<span class="code-keyword">class</span> SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+<span class="code-keyword">class</span> _SplashScreenState extends State&lt;SplashScreen&gt;
+    with SingleTickerProviderStateMixin {
+  AnimationController? _animationController;
+  Animation&lt;double&gt;? _animation;
+
+  @override
+  <span class="code-keyword">void</span> initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: Duration(seconds: 2),
+      vsync: <span class="code-keyword">this</span>,
+    );
+    
+    _animation = Tween&lt;double&gt;(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController!, curve: Curves.easeInOut),
+    );
+    
+    _animationController!.forward();
+    
+    Timer(Duration(seconds: 3), () {
+      Navigator.pushReplacementNamed(context, <span class="code-string">'/dashboard'</span>);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    <span class="code-keyword">return</span> Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+          ),
+        ),
+        child: Center(
+          child: FadeTransition(
+            opacity: _animation!,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.eco,
+                  size: 80,
+                  color: Colors.white,
+                ),
+                SizedBox(height: 20),
+                Text(
+                  <span class="code-string">'Smart Agriculture'</span>,
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  <span class="code-string">'Monitoring System'</span>,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white70,
+                  ),
+                ),
+                SizedBox(height: 40),
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation&lt;Color&gt;(Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  <span class="code-keyword">void</span> dispose() {
+    _animationController?.dispose();
+    super.dispose();
+  }
+}
+
+<span class="code-keyword">class</span> DashboardScreen extends StatefulWidget {
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
+
+<span class="code-keyword">class</span> _DashboardScreenState extends State&lt;DashboardScreen&gt; {
+  DatabaseReference _database = FirebaseDatabase.instance.reference();
+  Map&lt;String, dynamic&gt; sensorData = {};
+  Map&lt;String, <span class="code-keyword">bool</span>&gt; pumpStatus = {
+    <span class="code-string">'pump1'</span>: <span class="code-keyword">false</span>,
+    <span class="code-string">'pump2'</span>: <span class="code-keyword">false</span>,
+    <span class="code-string">'pump3'</span>: <span class="code-keyword">false</span>,
+    <span class="code-string">'pump4'</span>: <span class="code-keyword">false</span>,
+  };
+  
+  <span class="code-keyword">bool</span> autoIrrigation = <span class="code-keyword">true</span>;
+  <span class="code-keyword">bool</span> systemOnline = <span class="code-keyword">false</span>;
+  Timer? _updateTimer;
+
+  @override
+  <span class="code-keyword">void</span> initState() {
+    super.initState();
+    _listenToSensorData();
+    _listenToSystemStatus();
+    _startPeriodicUpdate();
+  }
+
+  <span class="code-keyword">void</span> _startPeriodicUpdate() {
+    _updateTimer = Timer.periodic(Duration(seconds: 5), (timer) {
+      _updateSensorData();
+    });
+  }
+
+  <span class="code-keyword">void</span> _updateSensorData() {
+    <span class="code-comment">// Simulate real-time updates for demo purposes</span>
+    setState(() {
+      systemOnline = <span class="code-keyword">true</span>;
+    });
+  }
+
+  <span class="code-keyword">void</span> _listenToSensorData() {
+    _database.child(<span class="code-string">'sensors/current'</span>).onValue.listen((event) {
+      <span class="code-keyword">if</span> (event.snapshot.value != null) {
+        setState(() {
+          sensorData = Map&lt;String, dynamic&gt;.from(event.snapshot.value);
+          systemOnline = <span class="code-keyword">true</span>;
+        });
+      }
+    });
+  }
+
+  <span class="code-keyword">void</span> _listenToSystemStatus() {
+    _database.child(<span class="code-string">'system'</span>).onValue.listen((event) {
+      <span class="code-keyword">if</span> (event.snapshot.value != null) {
+        final systemData = Map&lt;String, dynamic&gt;.from(event.snapshot.value);
+        setState(() {
+          systemOnline = systemData[<span class="code-string">'status'</span>] == <span class="code-string">'online'</span>;
+        });
+      }
+    });
+  }
+
+  <span class="code-keyword">void</span> _togglePump(String pumpName) {
+    setState(() {
+      pumpStatus[pumpName] = !pumpStatus[pumpName]!;
+    });
+    
+    _database.child(<span class="code-string">'control/$pumpName'</span>)
+        .set(pumpStatus[pumpName]! ? <span class="code-string">'ON'</span> : <span class="code-string">'OFF'</span>);
+    
+    <span class="code-comment">// Haptic feedback</span>
+    HapticFeedback.lightImpact();
+    
+    <span class="code-comment">// Show confirmation</span>
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(<span class="code-string">'${pumpName.toUpperCase()} turned ${pumpStatus[pumpName]! ? "ON" : "OFF"}'</span>),
+        duration: Duration(seconds: 2),
+        backgroundColor: pumpStatus[pumpName]! ? Colors.green : Colors.orange,
+      ),
+    );
+  }
+
+  <span class="code-keyword">void</span> _toggleAutoIrrigation() {
+    setState(() {
+      autoIrrigation = !autoIrrigation;
+    });
+    
+    _database.child(<span class="code-string">'control/auto_irrigation'</span>).set(autoIrrigation);
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(<span class="code-string">'Auto irrigation ${autoIrrigation ? "enabled" : "disabled"}'</span>),
+        backgroundColor: autoIrrigation ? Colors.green : Colors.orange,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    <span class="code-keyword">return</span> Scaffold(
+      appBar: _buildAppBar(),
+      body: RefreshIndicator(
+        onRefresh: _refreshData,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSystemStatus(),
+              SizedBox(height: 20),
+              _buildSensorCards(),
+              SizedBox(height: 20),
+              _buildControlSection(),
+              SizedBox(height: 20),
+              _buildQuickActions(),
+              SizedBox(height: 20),
+              _buildChartSection(),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: _buildBottomNavigation(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showEmergencyStop(context),
+        backgroundColor: Colors.red,
+        child: Icon(Icons.stop, color: Colors.white),
+        tooltip: <span class="code-string">'Emergency Stop'</span>,
+      ),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    <span class="code-keyword">return</span> AppBar(
+      title: Text(<span class="code-string">'Smart Agriculture'</span>),
+      backgroundColor: Color(0xFF4F46E5),
+      elevation: 0,
+      actions: [
+        IconButton(
+          icon: Icon(systemOnline ? Icons.cloud_done : Icons.cloud_off),
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(systemOnline ? <span class="code-string">'System Online'</span> : <span class="code-string">'System Offline'</span>),
+              ),
+            );
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.settings),
+          onPressed: () => Navigator.pushNamed(context, <span class="code-string">'/settings'</span>),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSystemStatus() {
+    <span class="code-keyword">return</span> Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: systemOnline 
+              ? [Colors.green.shade400, Colors.green.shade600]
+              : [Colors.red.shade400, Colors.red.shade600],
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            systemOnline ? Icons.check_circle : Icons.error,
+            color: Colors.white,
+            size: 24,
+          ),
+          SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  systemOnline ? <span class="code-string">'System Online'</span> : <span class="code-string">'System Offline'</span>,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  systemOnline 
+                      ? <span class="code-string">'All systems operational'</span> 
+                      : <span class="code-string">'Check connection'</span>,
+                  style: TextStyle(color: Colors.white70),
+                ),
+              ],
+            ),
+          ),
+          <span class="code-keyword">if</span> (systemOnline)
+            Container(
+              width: 12,
+              height: 12,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Container(
+                  width: 6,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSensorCards() {
+    <span class="code-keyword">return</span> Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          <span class="code-string">'Sensor Readings'</span>,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1F2937),
+          ),
+        ),
+        SizedBox(height: 12),
+        GridView.count(
+          shrinkWrap: <span class="code-keyword">true</span>,
+          physics: NeverScrollableScrollPhysics(),
+          crossAxisCount: 2,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          childAspectRatio: 1.2,
+          children: [
+            _sensorCard(
+              <span class="code-string">'Temperature'</span>, 
+              <span class="code-string">'${sensorData['temperature']?.toStringAsFixed(1) ?? '--'} °C'</span>,
+              Icons.thermostat,
+              Colors.red.shade400,
+              _getTemperatureStatus(sensorData[<span class="code-string">'temperature'</span>]),
+            ),
+            _sensorCard(
+              <span class="code-string">'Humidity'</span>, 
+              <span class="code-string">'${sensorData['humidity']?.toStringAsFixed(1) ?? '--'} %'</span>,
+              Icons.water_drop,
+              Colors.blue.shade400,
+              _getHumidityStatus(sensorData[<span class="code-string">'humidity'</span>]),
+            ),
+            _sensorCard(
+              <span class="code-string">'Soil Moisture'</span>, 
+              <span class="code-string">'${sensorData['soil_moisture_1']?.toStringAsFixed(1) ?? '--'} %'</span>,
+              Icons.grass,
+              Colors.brown.shade400,
+              _getSoilMoistureStatus(sensorData[<span class="code-string">'soil_moisture_1'</span>]),
+            ),
+            _sensorCard(
+              <span class="code-string">'Light Level'</span>, 
+              <span class="code-string">'${sensorData['light_level']?.toStringAsFixed(1) ?? '--'} %'</span>,
+              Icons.wb_sunny,
+              Colors.orange.shade400,
+              _getLightStatus(sensorData[<span class="code-string">'light_level'</span>]),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _sensorCard(String title, String value, IconData icon, Color color, String status) {
+    <span class="code-keyword">return</span> Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: color, size: 24),
+              SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF6B7280),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Spacer(),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF1F2937),
+            ),
+          ),
+          Text(
+            status,
+            style: TextStyle(
+              fontSize: 12,
+              color: _getStatusColor(status),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildControlSection() {
+    <span class="code-keyword">return</span> Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              <span class="code-string">'Irrigation Control'</span>,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF1F2937),
+              ),
+            ),
+            Switch(
+              value: autoIrrigation,
+              onChanged: (value) => _toggleAutoIrrigation(),
+              activeColor: Colors.green,
+            ),
+          ],
+        ),
+        Text(
+          autoIrrigation ? <span class="code-string">'Auto mode enabled'</span> : <span class="code-string">'Manual mode'</span>,
+          style: TextStyle(color: Color(0xFF6B7280)),
+        ),
+        SizedBox(height: 16),
+        GridView.count(
+          shrinkWrap: <span class="code-keyword">true</span>,
+          physics: NeverScrollableScrollPhysics(),
+          crossAxisCount: 2,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          childAspectRatio: 2.5,
+          children: [
+            _pumpControlCard(<span class="code-string">'Pump 1'</span>, <span class="code-string">'pump1'</span>, Icons.water_drop),
+            _pumpControlCard(<span class="code-string">'Pump 2'</span>, <span class="code-string">'pump2'</span>, Icons.water_drop),
+            _pumpControlCard(<span class="code-string">'Pump 3'</span>, <span class="code-string">'pump3'</span>, Icons.water_drop),
+            _pumpControlCard(<span class="code-string">'Pump 4'</span>, <span class="code-string">'pump4'</span>, Icons.water_drop),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _pumpControlCard(String title, String pumpKey, IconData icon) {
+    <span class="code-keyword">bool</span> isActive = pumpStatus[pumpKey] ?? <span class="code-keyword">false</span>;
+    
+    <span class="code-keyword">return</span> GestureDetector(
+      onTap: () => _togglePump(pumpKey),
+      child: Container(
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isActive ? Colors.blue.shade50 : Colors.grey.shade50,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isActive ? Colors.blue.shade300 : Colors.grey.shade300,
+            width: 2,
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: isActive ? Colors.blue.shade600 : Colors.grey.shade500,
+              size: 24,
+            ),
+            SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: isActive ? Colors.blue.shade800 : Colors.grey.shade700,
+                    ),
+                  ),
+                  Text(
+                    isActive ? <span class="code-string">'Active'</span> : <span class="code-string">'Inactive'</span>,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: isActive ? Colors.blue.shade600 : Colors.grey.shade500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Switch(
+              value: isActive,
+              onChanged: (value) => _togglePump(pumpKey),
+              activeColor: Colors.blue.shade600,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuickActions() {
+    <span class="code-keyword">return</span> Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          <span class="code-string">'Quick Actions'</span>,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1F2937),
+          ),
+        ),
+        SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: _actionButton(
+                <span class="code-string">'View History'</span>,
+                Icons.history,
+                Colors.purple.shade400,
+                () => Navigator.pushNamed(context, <span class="code-string">'/history'</span>),
+              ),
+            ),
+            SizedBox(width: 12),
+            Expanded(
+              child: _actionButton(
+                <span class="code-string">'Settings'</span>,
+                Icons.settings,
+                Colors.grey.shade600,
+                () => Navigator.pushNamed(context, <span class="code-string">'/settings'</span>),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _actionButton(String title, IconData icon, Color color, VoidCallback onTap) {
+    <span class="code-keyword">return</span> GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: color.withOpacity(0.3)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 20),
+            SizedBox(width: 8),
+            Text(
+              title,
+              style: TextStyle(
+                color: color,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChartSection() {
+    <span class="code-keyword">return</span> Container(
+      height: 250,
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            <span class="code-string">'Soil Moisture Trend'</span>,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF1F2937),
+            ),
+          ),
+          SizedBox(height: 16),
+          Expanded(
+            child: LineChart(
+              LineChartData(
+                gridData: FlGridData(show: <span class="code-keyword">false</span>),
+                titlesData: FlTitlesData(show: <span class="code-keyword">false</span>),
+                borderData: FlBorderData(show: <span class="code-keyword">false</span>),
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: _generateChartData(),
+                    isCurved: <span class="code-keyword">true</span>,
+                    colors: [Colors.blue.shade400],
+                    barWidth: 3,
+                    dotData: FlDotData(show: <span class="code-keyword">false</span>),
+                    belowBarData: BarAreaData(
+                      show: <span class="code-keyword">true</span>,
+                      colors: [Colors.blue.shade100],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List&lt;FlSpot&gt; _generateChartData() {
+    <span class="code-comment">// Generate sample data for demonstration</span>
+    <span class="code-keyword">return</span> [
+      FlSpot(0, 45),
+      FlSpot(1, 50),
+      FlSpot(2, 48),
+      FlSpot(3, 60),
+      FlSpot(4, 55),
+      FlSpot(5, 65),
+      FlSpot(6, 62),
+    ];
+  }
+
+  Widget _buildBottomNavigation() {
+    <span class="code-keyword">return</span> BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Color(0xFF4F46E5),
+      unselectedItemColor: Colors.grey,
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.dashboard),
+          label: <span class="code-string">'Dashboard'</span>,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.history),
+          label: <span class="code-string">'History'</span>,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: <span class="code-string">'Settings'</span>,
+        ),
+      ],
+      onTap: (index) {
+        <span class="code-keyword">switch</span> (index) {
+          <span class="code-keyword">case</span> 1:
+            Navigator.pushNamed(context, <span class="code-string">'/history'</span>);
+            <span class="code-keyword">break</span>;
+          <span class="code-keyword">case</span> 2:
+            Navigator.pushNamed(context, <span class="code-string">'/settings'</span>);
+            <span class="code-keyword">break</span>;
+        }
+      },
+    );
+  }
+
+  Future&lt;<span class="code-keyword">void</span>&gt; _refreshData() async {
+    await Future.delayed(Duration(seconds: 1));
+    _updateSensorData();
+  }
+
+  <span class="code-keyword">void</span> _showEmergencyStop(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(<span class="code-string">'Emergency Stop'</span>),
+        content: Text(<span class="code-string">'This will immediately stop all pumps. Continue?'</span>),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(<span class="code-string">'Cancel'</span>),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              <span class="code-comment">// Stop all pumps</span>
+              pumpStatus.keys.forEach((key) {
+                _database.child(<span class="code-string">'control/$key'</span>).set(<span class="code-string">'OFF'</span>);
+              });
+              
+              setState(() {
+                pumpStatus = pumpStatus.map((key, value) => MapEntry(key, <span class="code-keyword">false</span>));
+              });
+              
+              Navigator.pop(context);
+              
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(<span class="code-string">'Emergency stop activated - All pumps stopped'</span>),
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 3),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(primary: Colors.red),
+            child: Text(<span class="code-string">'STOP ALL'</span>),
+          ),
+        ],
+      ),
+    );
+  }
+
+  <span class="code-comment">// Helper methods for status determination</span>
+  String _getTemperatureStatus(dynamic temp) {
+    <span class="code-keyword">if</span> (temp == null) <span class="code-keyword">return</span> <span class="code-string">'No data'</span>;
+    <span class="code-keyword">double</span> temperature = temp.toDouble();
+    <span class="code-keyword">if</span> (temperature < 15) <span class="code-keyword">return</span> <span class="code-string">'Too cold'</span>;
+    <span class="code-keyword">if</span> (temperature > 35) <span class="code-keyword">return</span> <span class="code-string">'Too hot'</span>;
+    <span class="code-keyword">return</span> <span class="code-string">'Optimal'</span>;
+  }
+
+  String _getHumidityStatus(dynamic hum) {
+    <span class="code-keyword">if</span> (hum == null) <span class="code-keyword">return</span> <span class="code-string">'No data'</span>;
+    <span class="code-keyword">double</span> humidity = hum.toDouble();
+    <span class="code-keyword">if</span> (humidity < 40) <span class="code-keyword">return</span> <span class="code-string">'Too dry'</span>;
+    <span class="code-keyword">if</span> (humidity > 80) <span class="code-keyword">return</span> <span class="code-string">'Too humid'</span>;
+    <span class="code-keyword">return</span> <span class="code-string">'Good'</span>;
+  }
+
+  String _getSoilMoistureStatus(dynamic moisture) {
+    <span class="code-keyword">if</span> (moisture == null) <span class="code-keyword">return</span> <span class="code-string">'No data'</span>;
+    <span class="code-keyword">double</span> soilMoisture = moisture.toDouble();
+    <span class="code-keyword">if</span> (soilMoisture < 30) <span class="code-keyword">return</span> <span class="code-string">'Dry'</span>;
+    <span class="code-keyword">if</span> (soilMoisture > 70) <span class="code-keyword">return</span> <span class="code-string">'Wet'</span>;
+    <span class="code-keyword">return</span> <span class="code-string">'Moist'</span>;
+  }
+
+  String _getLightStatus(dynamic light) {
+    <span class="code-keyword">if</span> (light == null) <span class="code-keyword">return</span> <span class="code-string">'No data'</span>;
+    <span class="code-keyword">double</span> lightLevel = light.toDouble();
+    <span class="code-keyword">if</span> (lightLevel < 30) <span class="code-keyword">return</span> <span class="code-string">'Low light'</span>;
+    <span class="code-keyword">if</span> (lightLevel > 80) <span class="code-keyword">return</span> <span class="code-string">'Bright'</span>;
+    <span class="code-keyword">return</span> <span class="code-string">'Good light'</span>;
+  }
+
+  Color _getStatusColor(String status) {
+    <span class="code-keyword">switch</span> (status.toLowerCase()) {
+      <span class="code-keyword">case</span> <span class="code-string">'optimal'</span>:
+      <span class="code-keyword">case</span> <span class="code-string">'good'</span>:
+      <span class="code-keyword">case</span> <span class="code-string">'moist'</span>:
+      <span class="code-keyword">case</span> <span class="code-string">'good light'</span>:
+        <span class="code-keyword">return</span> Colors.green;
+      <span class="code-keyword">case</span> <span class="code-string">'dry'</span>:
+      <span class="code-keyword">case</span> <span class="code-string">'too dry'</span>:
+      <span class="code-keyword">case</span> <span class="code-string">'too hot'</span>:
+      <span class="code-keyword">case</span> <span class="code-string">'too cold'</span>:
+        <span class="code-keyword">return</span> Colors.red;
+      <span class="code-keyword">case</span> <span class="code-string">'wet'</span>:
+      <span class="code-keyword">case</span> <span class="code-string">'too humid'</span>:
+      <span class="code-keyword">case</span> <span class="code-string">'low light'</span>:
+        <span class="code-keyword">return</span> Colors.orange;
+      <span class="code-keyword">default</span>:
+        <span class="code-keyword">return</span> Colors.grey;
+    }
+  }
+
+  @override
+  <span class="code-keyword">void</span> dispose() {
+    _updateTimer?.cancel();
+    super.dispose();
+  }
+}
+
+<span class="code-comment">// Additional screens (HistoryScreen, SettingsScreen) would be implemented here</span>
+<span class="code-keyword">class</span> HistoryScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    <span class="code-keyword">return</span> Scaffold(
+      appBar: AppBar(title: Text(<span class="code-string">'Data History'</span>)),
+      body: Center(child: Text(<span class="code-string">'Historical data charts and logs'</span>)),
+    );
+  }
+}
+
+<span class="code-keyword">class</span> SettingsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    <span class="code-keyword">return</span> Scaffold(
+      appBar: AppBar(title: Text(<span class="code-string">'Settings'</span>)),
+      body: Center(child: Text(<span class="code-string">'System configuration options'</span>)),
+    );
+  }
+}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Assembly Section -->
+                <div id="assembly" class="section-content">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--text-dark);">
+                        <i class="fas fa-wrench text-gradient"></i> Step-by-Step Assembly Guide
+                    </h3>
+                    
+                    <div class="step-by-step">
+                        <div class="step">
+                            <div class="step-title">
+                                <span class="step-number">1</span>
+                                <i class="fas fa-microchip" style="margin-left: 0.5rem; color: var(--primary-color);"></i>
+                                Prepare the ESP32 Development Board
+                            </div>
+                            <div class="step-content">
+                                Mount the ESP32 DevKit V1 on a breadboard or custom PCB. Ensure all pins are accessible and the board is securely positioned. Connect the 3.3V and GND rails to your power distribution points. Test the board by uploading a simple LED blink program to verify functionality.
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-title">
+                                <span class="step-number">2</span>
+                                <i class="fas fa-thermometer-half" style="margin-left: 0.5rem; color: var(--error-color);"></i>
+                                Connect the DHT22 Sensor
+                            </div>
+                            <div class="step-content">
+                                Wire the DHT22 temperature and humidity sensor to GPIO 4. Connect VCC to 3.3V, GND to ground, and DATA to pin 4. Add a 10kΩ pull-up resistor between VCC and DATA pin for stable communication. Mount the sensor in a ventilated enclosure to ensure accurate readings.
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-title">
+                                <span class="step-number">3</span>
+                                <i class="fas fa-tint" style="margin-left: 0.5rem; color: var(--info-color);"></i>
+                                Install Soil Moisture Sensors
+                            </div>
+                            <div class="step-content">
+                                Connect three capacitive soil moisture sensors to analog pins GPIO 34, 35, and 32. These sensors provide better corrosion resistance than resistive types. Connect VCC to 3.3V and GND accordingly. Calibrate each sensor by testing in completely dry and fully saturated soil conditions.
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-title">
+                                <span class="step-number">4</span>
+                                <i class="fas fa-sun" style="margin-left: 0.5rem; color: var(--warning-color);"></i>
+                                Add Light Detection Circuit
+                            </div>
+                            <div class="step-content">
+                                Create a voltage divider using the LDR and a 10kΩ resistor. Connect the junction to GPIO 33 for analog reading. This setup will provide light intensity measurements throughout the day. Position the LDR to avoid shadows from other components.
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-title">
+                                <span class="step-number">5</span>
+                                <i class="fas fa-toggle-on" style="margin-left: 0.5rem; color: var(--secondary-color);"></i>
+                                Wire the Relay Module
+                            </div>
+                            <div class="step-content">
+                                Connect the 4-channel relay module to control irrigation pumps. Use GPIO pins 16, 17, 5, and 18 for relay control. Connect VCC to 5V (use external supply if needed), GND to ground. Add flyback diodes across relay coils for protection and test each relay individually.
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-title">
+                                <span class="step-number">6</span>
+                                <i class="fas fa-solar-panel" style="margin-left: 0.5rem; color: var(--warning-color);"></i>
+                                Set Up Power System
+                            </div>
+                            <div class="step-content">
+                                Install the solar panel and 12V battery system. Use a charge controller to regulate battery charging and prevent overcharging. Add a 12V to 5V/3.3V converter to power the ESP32 and sensors from the battery system. Include voltage monitoring circuitry for battery level tracking.
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-title">
+                                <span class="step-number">7</span>
+                                <i class="fas fa-shower" style="margin-left: 0.5rem; color: var(--info-color);"></i>
+                                Install Water Pumps
+                            </div>
+                            <div class="step-content">
+                                Connect the 12V water pumps through the relay module. Ensure proper water tubing and positioning for even distribution. Add check valves to prevent backflow and ensure efficient water distribution. Test pump operation and flow rates before final installation.
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-title">
+                                <span class="step-number">8</span>
+                                <i class="fas fa-shield-alt" style="margin-left: 0.5rem; color: var(--success-color);"></i>
+                                Weatherproofing and Enclosure
+                            </div>
+                            <div class="step-content">
+                                Install all electronics in a weatherproof enclosure rated IP65 or higher. Use cable glands for wire entries and ensure all connections are properly sealed. Add ventilation for heat dissipation while maintaining water protection. Include emergency access points for maintenance.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Testing Section -->
+                <div id="testing" class="section-content">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--text-dark);">
+                        <i class="fas fa-vial text-gradient"></i> Testing & Calibration
+                    </h3>
+                    
+                    <div style="margin-bottom: 2.5rem;">
+                        <h4 style="color: var(--text-dark); margin-bottom: 1rem;">
+                            <i class="fas fa-clipboard-check"></i> Pre-deployment Testing
+                        </h4>
+                        
+                        <div class="step" style="border-left-color: var(--info-color);">
+                            <div style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(59, 130, 246, 0.1)); padding: 1.5rem; border-radius: var(--radius-lg); margin: 0.75rem 0;">
+                                <strong style="color: var(--info-color);">
+                                    <i class="fas fa-thermometer-half"></i> Sensor Calibration:
+                                </strong><br>
+                                • Test DHT22 against known temperature/humidity values using calibrated instruments<br>
+                                • Calibrate soil moisture sensors with dry and wet soil samples from your specific location<br>
+                                • Verify LDR response to different light conditions throughout a full day cycle<br>
+                                • Check ADC readings and conversion formulas for accuracy<br>
+                                • Document calibration values for future reference
+                            </div>
+                        </div>
+                        
+                        <div class="step" style="border-left-color: var(--success-color);">
+                            <div style="background: linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(34, 197, 94, 0.1)); padding: 1.5rem; border-radius: var(--radius-lg); margin: 0.75rem 0;">
+                                <strong style="color: var(--success-color);">
+                                    <i class="fas fa-wifi"></i> Communication Testing:
+                                </strong><br>
+                                • Verify WiFi connection stability across different times of day<br>
+                                • Test Firebase data upload and retrieval with various data sizes<br>
+                                • Check mobile app connectivity and real-time updates<br>
+                                • Test system behavior during network outages<br>
+                                • Validate data integrity and error handling mechanisms
+                            </div>
+                        </div>
+                        
+                        <div class="step" style="border-left-color: var(--warning-color);">
+                            <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(251, 191, 36, 0.1)); padding: 1.5rem; border-radius: var(--radius-lg); margin: 0.75rem 0;">
+                                <strong style="color: var(--warning-color);">
+                                    <i class="fas fa-cogs"></i> Control System Testing:
+                                </strong><br>
+                                • Test manual pump control from mobile app with immediate response verification<br>
+                                • Verify automatic irrigation triggers with various soil moisture levels<br>
+                                • Check relay switching timing and pump operation sequences<br>
+                                • Test emergency stop functionality and system recovery<br>
+                                • Validate power consumption and battery life under different loads
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 2.5rem;">
+                        <h4 style="color: var(--text-dark); margin-bottom: 1rem;">
+                            <i class="fas fa-chart-line"></i> Field Testing Results
+                        </h4>
+                        <div style="background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary)); padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--border-color);">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                                <div style="text-align: center; padding: 1rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                                    <div style="font-size: 2rem; font-weight: bold; color: var(--success-color);">
+                                        <i class="fas fa-cloud-upload-alt"></i> 98.5%
+                                    </div>
+                                    <div style="color: var(--text-medium); font-weight: 600;">Data Upload Success</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">Over 30 days testing</div>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                                    <div style="font-size: 2rem; font-weight: bold; color: var(--info-color);">
+                                        <i class="fas fa-bullseye"></i> ±0.3°C
+                                    </div>
+                                    <div style="color: var(--text-medium); font-weight: 600;">Temperature Accuracy</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">Compared to reference</div>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                                    <div style="font-size: 2rem; font-weight: bold; color: var(--secondary-color);">
+                                        <i class="fas fa-battery-three-quarters"></i> 72hrs
+                                    </div>
+                                    <div style="color: var(--text-medium); font-weight: 600;">Battery Life</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">Without solar charging</div>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                                    <div style="font-size: 2rem; font-weight: bold; color: var(--warning-color);">
+                                        <i class="fas fa-broadcast-tower"></i> 100m
+                                    </div>
+                                    <div style="color: var(--text-medium); font-weight: 600;">WiFi Range</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">Reliable connection</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <h4 style="color: var(--text-dark); margin-bottom: 1rem;">
+                            <i class="fas fa-bug"></i> Common Issues & Solutions
+                        </h4>
+                        <div style="background: white; border-radius: var(--radius-xl); padding: 2rem; border: 1px solid var(--border-color);">
+                            <div style="display: grid; gap: 1.5rem;">
+                                <div style="border-left: 4px solid var(--error-color); padding-left: 1rem;">
+                                    <strong style="color: var(--error-color);">WiFi Connection Issues:</strong><br>
+                                    <span style="color: var(--text-medium);">Solution: Implement automatic reconnection with exponential backoff, use WiFiManager for easy configuration</span>
+                                </div>
+                                <div style="border-left: 4px solid var(--warning-color); padding-left: 1rem;">
+                                    <strong style="color: var(--warning-color);">Sensor Reading Fluctuations:</strong><br>
+                                    <span style="color: var(--text-medium);">Solution: Add averaging filters, implement sensor validation logic, use proper grounding</span>
+                                </div>
+                                <div style="border-left: 4px solid var(--info-color); padding-left: 1rem;">
+                                    <strong style="color: var(--info-color);">Power Management:</strong><br>
+                                    <span style="color: var(--text-medium);">Solution: Implement deep sleep modes, optimize sensor reading intervals, add low battery protection</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Demo Section -->
+                <div id="demo" class="section-content">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--text-dark);">
+                        <i class="fas fa-play text-gradient"></i> Live Demo & Results
+                    </h3>
+                    
+                    <div class="video-container" onclick="playDemo()">
+                        <div class="video-placeholder">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <strong>Project Demo Video</strong><br>
+                            <small>Click to play demonstration</small>
+                        </div>
+                    </div>
+
+                    <div style="margin: 2.5rem 0;">
+                        <h4 style="color: var(--text-dark); margin-bottom: 1rem;">
+                            <i class="fas fa-trophy"></i> Project Outcomes & Impact
+                        </h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+                            <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 2rem; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);">
+                                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                                    <i class="fas fa-tint" style="font-size: 2rem; margin-right: 1rem;"></i>
+                                    <h5 style="margin: 0;">Water Conservation</h5>
+                                </div>
+                                <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">35%</div>
+                                <div>Reduction in water usage compared to traditional irrigation methods</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 2rem; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);">
+                                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                                    <i class="fas fa-seedling" style="font-size: 2rem; margin-right: 1rem;"></i>
+                                    <h5 style="margin: 0;">Crop Yield</h5>
+                                </div>
+                                <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">+18%</div>
+                                <div>Improvement in crop yield through optimized irrigation scheduling</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #4facfe, #00f2fe); color: white; padding: 2rem; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);">
+                                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                                    <i class="fas fa-chart-line" style="font-size: 2rem; margin-right: 1rem;"></i>
+                                    <h5 style="margin: 0;">Monitoring Accuracy</h5>
+                                </div>
+                                <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">96.8%</div>
+                                <div>Real-time sensor data accuracy validated against reference instruments</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin: 2.5rem 0;">
+                        <h4 style="color: var(--text-dark); margin-bottom: 1rem;">
+                            <i class="fas fa-rocket"></i> Future Enhancements & Roadmap
+                        </h4>
+                        <div style="background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary)); padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--border-color);">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                                <div>
+                                    <h5 style="color: var(--primary-color); margin-bottom: 0.75rem;">
+                                        <i class="fas fa-cloud-sun"></i> Weather Integration
+                                    </h5>
+                                    <p style="color: var(--text-medium); font-size: 0.875rem; line-height: 1.6;">Integration of weather prediction API for smart irrigation scheduling based on rainfall forecasts and evapotranspiration calculations.</p>
+                                </div>
+                                <div>
+                                    <h5 style="color: var(--secondary-color); margin-bottom: 0.75rem;">
+                                        <i class="fas fa-brain"></i> AI Disease Detection
+                                    </h5>
+                                    <p style="color: var(--text-medium); font-size: 0.875rem; line-height: 1.6;">Machine learning algorithms for crop disease detection using camera module and computer vision techniques.</p>
+                                </div>
+                                <div>
+                                    <h5 style="color: var(--success-color); margin-bottom: 0.75rem;">
+                                        <i class="fas fa-broadcast-tower"></i> LoRaWAN Connectivity
+                                    </h5>
+                                    <p style="color: var(--text-medium); font-size: 0.875rem; line-height: 1.6;">Extended range connectivity for remote areas using LoRaWAN technology with multi-hop networking capabilities.</p>
+                                </div>
+                                <div>
+                                    <h5 style="color: var(--warning-color); margin-bottom: 0.75rem;">
+                                        <i class="fas fa-vial"></i> Nutrient Monitoring
+                                    </h5>
+                                    <p style="color: var(--text-medium); font-size: 0.875rem; line-height: 1.6;">Advanced chemical sensors for NPK level monitoring and automated fertilizer dispensing systems.</p>
+                                </div>
+                                <div>
+                                    <h5 style="color: var(--info-color); margin-bottom: 0.75rem;">
+                                        <i class="fas fa-solar-panel"></i> Energy Optimization
+                                    </h5>
+                                    <p style="color: var(--text-medium); font-size: 0.875rem; line-height: 1.6;">MPPT charge controller integration with solar panel optimization and energy consumption analytics.</p>
+                                </div>
+                                <div>
+                                    <h5 style="color: var(--error-color); margin-bottom: 0.75rem;">
+                                        <i class="fas fa-layer-group"></i> Multi-Crop Support
+                                    </h5>
+                                    <p style="color: var(--text-medium); font-size: 0.875rem; line-height: 1.6;">Customizable irrigation schedules for different crop types with zone-based control and growth stage optimization.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Comments Section -->
+                <div class="comments-section">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--text-dark);">
+                        <i class="fas fa-comments text-gradient"></i> Comments & Discussion (23)
+                    </h3>
+                    
+                    <div class="comment-form">
+                        <textarea class="comment-textarea" placeholder="Share your thoughts, ask questions, or suggest improvements..." id="commentInput"></textarea>
+                        <button class="btn btn-primary" onclick="postComment()" disabled id="postBtn">
+                            <i class="fas fa-paper-plane"></i> Post Comment
+                        </button>
+                    </div>
+
+                    <div class="comment">
+                        <div class="comment-header">
+                            <div class="comment-author">
+                                <div class="comment-avatar">RK</div>
+                                <div>
+                                    <div style="font-weight: 600;">Rahul Kumar</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-medium);">
+                                        <i class="fas fa-graduation-cap"></i> Student at NIT Durgapur
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment-date">
+                                <i class="fas fa-clock"></i> 2 hours ago
+                            </div>
+                        </div>
+                        <div class="comment-content">
+                            Excellent project! I'm particularly impressed with the solar power integration and the comprehensive mobile app. Have you considered adding soil pH sensors as well? That would make this system even more comprehensive for precision agriculture. The code structure looks very professional too.
+                        </div>
+                    </div>
+
+                    <div class="comment">
+                        <div class="comment-header">
+                            <div class="comment-author">
+                                <div class="comment-avatar">MS</div>
+                                <div>
+                                    <div style="font-weight: 600;">Dr. Maya Sharma</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-medium);">
+                                        <i class="fas fa-university"></i> Professor, Agricultural Engineering
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment-date">
+                                <i class="fas fa-clock"></i> 5 hours ago
+                            </div>
+                        </div>
+                        <div class="comment-content">
+                            Great work on the water conservation aspect! The 35% reduction in water usage is significant and would have real-world impact. I'd love to see this tested with different crop types and soil conditions. Have you documented the power consumption analysis? This could be valuable for scaling to larger agricultural applications.
+                        </div>
+                    </div>
+
+                    <div class="comment">
+                        <div class="comment-header">
+<div class="comment-author">
+                                <div class="comment-avatar">AP</div>
+                                <div>
+                                    <div style="font-weight: 600;">Amit Patel</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-medium);">
+                                        <i class="fas fa-code"></i> IoT Developer
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment-date">
+                                <i class="fas fa-clock"></i> 1 day ago
+                            </div>
+                        </div>
+                        <div class="comment-content">
+                            The code structure looks clean and well-organized. One suggestion: consider implementing OTA (Over-The-Air) updates for the ESP32 code. This would allow remote firmware updates without physical access to the device. Also, the error handling and WiFi reconnection logic is impressive!
+                        </div>
+                    </div>
+
+                    <div class="comment">
+                        <div class="comment-header">
+                            <div class="comment-author">
+                                <div class="comment-avatar">SK</div>
+                                <div>
+                                    <div style="font-weight: 600;">Sneha Kapoor</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-medium);">
+                                        <i class="fas fa-seedling"></i> Agriculture Enthusiast
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comment-date">
+                                <i class="fas fa-clock"></i> 2 days ago
+                            </div>
+                        </div>
+                        <div class="comment-content">
+                            This is exactly what modern farming needs! I'm working on a similar project for my family's farm. Could you share more details about the soil moisture sensor calibration process? Also, how does the system handle different soil types?
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Sidebar -->
+            <div class="sidebar">
+                <!-- Project Progress -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-tasks"></i> Project Status
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="progress-text">85% Complete - Field Testing Phase</div>
+                    
+                    <div style="margin-top: 1rem; font-size: 0.875rem; color: var(--text-medium);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span>✅ Design</span>
+                            <span>100%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span>✅ Prototyping</span>
+                            <span>100%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span>🔄 Testing</span>
+                            <span>85%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>⏳ Deployment</span>
+                            <span>60%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-chart-bar"></i> Quick Stats
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-layer-group" style="color: var(--warning-color);"></i>
+                                Difficulty Level:
+                            </span>
+                            <span style="color: var(--warning-color); font-weight: 600;">Intermediate</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-clock" style="color: var(--success-color);"></i>
+                                Estimated Time:
+                            </span>
+                            <span style="color: var(--success-color); font-weight: 600;">8-12 hours</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-rupee-sign" style="color: var(--error-color);"></i>
+                                Total Cost:
+                            </span>
+                            <span style="color: var(--error-color); font-weight: 600;">₹3,245</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-microchip" style="color: var(--primary-color);"></i>
+                                Components:
+                            </span>
+                            <span style="color: var(--primary-color); font-weight: 600;">9 items</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-download" style="color: var(--secondary-color);"></i>
+                                Downloads:
+                            </span>
+                            <span style="color: var(--secondary-color); font-weight: 600;">342</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Tags -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-tags"></i> Project Tags
+                    </div>
+                    <div class="tags-list">
+                        <span class="tag">IoT</span>
+                        <span class="tag">ESP32</span>
+                        <span class="tag">Agriculture</span>
+                        <span class="tag">Smart Farming</span>
+                        <span class="tag">Solar Power</span>
+                        <span class="tag">Firebase</span>
+                        <span class="tag">Flutter</span>
+                        <span class="tag">Automation</span>
+                        <span class="tag">Sensors</span>
+                        <span class="tag">Mobile App</span>
+                        <span class="tag">Water Conservation</span>
+                        <span class="tag">Precision Agriculture</span>
+                    </div>
+                </div>
+
+                <!-- Tools Required -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-toolbox"></i> Tools Required
+                    </div>
+                    <div style="font-size: 0.875rem; line-height: 1.8; color: var(--text-medium);">
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-screwdriver" style="color: var(--primary-color); margin-right: 0.5rem;"></i>Soldering Iron & Solder</div>
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-microchip" style="color: var(--info-color); margin-right: 0.5rem;"></i>Breadboard & Jumper Wires</div>
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-tachometer-alt" style="color: var(--warning-color); margin-right: 0.5rem;"></i>Multimeter</div>
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-cut" style="color: var(--error-color); margin-right: 0.5rem;"></i>Wire Strippers</div>
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-tools" style="color: var(--success-color); margin-right: 0.5rem;"></i>Screwdriver Set</div>
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-fire" style="color: var(--secondary-color); margin-right: 0.5rem;"></i>Hot Glue Gun</div>
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-drill" style="color: var(--text-medium); margin-right: 0.5rem;"></i>Drill & Bits</div>
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-laptop-code" style="color: var(--primary-color); margin-right: 0.5rem;"></i>Arduino IDE</div>
+                        <div><i class="fas fa-mobile-alt" style="color: var(--info-color); margin-right: 0.5rem;"></i>Android Studio/VS Code</div>
+                    </div>
+                </div>
+
+                <!-- Skills Gained -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-graduation-cap"></i> Skills You'll Learn
+                    </div>
+                    <div style="font-size: 0.875rem; line-height: 1.8; color: var(--text-medium);">
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-microchip" style="color: var(--primary-color); margin-right: 0.5rem;"></i>ESP32 Programming</div>
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-network-wired" style="color: var(--info-color); margin-right: 0.5rem;"></i>IoT System Design</div>
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-database" style="color: var(--warning-color); margin-right: 0.5rem;"></i>Firebase Integration</div>
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-mobile-alt" style="color: var(--success-color); margin-right: 0.5rem;"></i>Flutter App Development</div>
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-plug" style="color: var(--secondary-color); margin-right: 0.5rem;"></i>Sensor Interfacing</div>
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-solar-panel" style="color: var(--warning-color); margin-right: 0.5rem;"></i>Solar Power Systems</div>
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-sitemap" style="color: var(--error-color); margin-right: 0.5rem;"></i>PCB Design Basics</div>
+                        <div style="margin-bottom: 0.5rem;"><i class="fas fa-chart-line" style="color: var(--info-color); margin-right: 0.5rem;"></i>Data Visualization</div>
+                        <div><i class="fas fa-seedling" style="color: var(--success-color); margin-right: 0.5rem;"></i>Agricultural Technology</div>
+                    </div>
+                </div>
+
+                <!-- Related Projects -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-project-diagram"></i> Related Projects
+                    </div>
+                    <div class="related-projects">
+                        <a href="#" class="related-item">
+                            <div class="related-thumb">🏠</div>
+                            <div class="related-info">
+                                <div class="related-title">Smart Home Automation System</div>
+                                <div class="related-author">by Priya Singh</div>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="related-item">
+                            <div class="related-thumb">🌡️</div>
+                            <div class="related-info">
+                                <div class="related-title">Weather Monitoring Station</div>
+                                <div class="related-author">by Vikash Ranjan</div>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="related-item">
+                            <div class="related-thumb">💧</div>
+                            <div class="related-info">
+                                <div class="related-title">Water Quality Monitor</div>
+                                <div class="related-author">by Anita Sharma</div>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="related-item">
+                            <div class="related-thumb">☀️</div>
+                            <div class="related-info">
+                                <div class="related-title">Solar Tracker System</div>
+                                <div class="related-author">by Rajesh Gupta</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Download Resources -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-download"></i> Download Resources
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <a href="#" class="btn btn-secondary hover-lift" style="text-align: center; font-size: 0.875rem;">
+                            <i class="fas fa-folder-open"></i> Complete Source Code
+                        </a>
+                        <a href="#" class="btn btn-secondary hover-lift" style="text-align: center; font-size: 0.875rem;">
+                            <i class="fas fa-sitemap"></i> Circuit Schematics
+                        </a>
+                        <a href="#" class="btn btn-secondary hover-lift" style="text-align: center; font-size: 0.875rem;">
+                            <i class="fas fa-mobile-alt"></i> Mobile App APK
+                        </a>
+                        <a href="#" class="btn btn-secondary hover-lift" style="text-align: center; font-size: 0.875rem;">
+                            <i class="fas fa-file-pdf"></i> Documentation PDF
+                        </a>
+                        <a href="#" class="btn btn-secondary hover-lift" style="text-align: center; font-size: 0.875rem;">
+                            <i class="fas fa-video"></i> Video Tutorial
+                        </a>
+                        <a href="#" class="btn btn-secondary hover-lift" style="text-align: center; font-size: 0.875rem;">
+                            <i class="fas fa-th-large"></i> 3D Models
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Support -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-life-ring"></i> Need Help?
+                    </div>
+                    <div style="font-size: 0.875rem; line-height: 1.7; color: var(--text-medium); margin-bottom: 1rem;">
+                        Having trouble with this project? Get help from the community or contact the author directly for technical support and guidance.
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <a href="#" class="btn btn-secondary hover-lift" style="text-align: center; font-size: 0.875rem;">
+                            <i class="fab fa-discord"></i> Join Discord
+                        </a>
+                        <a href="#" class="btn btn-secondary hover-lift" style="text-align: center; font-size: 0.875rem;">
+                            <i class="fas fa-envelope"></i> Contact Author
+                        </a>
+                        <a href="#" class="btn btn-secondary hover-lift" style="text-align: center; font-size: 0.875rem;">
+                            <i class="fab fa-github"></i> GitHub Issues
+                        </a>
+                        <a href="#" class="btn btn-secondary hover-lift" style="text-align: center; font-size: 0.875rem;">
+                            <i class="fas fa-question-circle"></i> FAQ
+                        </a>
+                    </div>
+                </div>
+
+                <!-- License & Attribution -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-balance-scale"></i> License & Attribution
+                    </div>
+                    <div style="font-size: 0.875rem; color: var(--text-medium); line-height: 1.6;">
+                        <div style="margin-bottom: 1rem;">
+                            <strong>License:</strong> MIT License<br>
+                            <small>Free for personal and commercial use</small>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <strong>Attribution:</strong><br>
+                            Please credit the original author when using this design
+                        </div>
+                        <div>
+                            <strong>Last Updated:</strong><br>
+                            <small>December 15, 2024</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div id="toastContent">Action completed successfully!</div>
+    </div>
+
+    <script>
+        // Enhanced JavaScript functionality
+        let currentSection = 'overview';
+        let isLiked = false;
+        let likeCount = 89;
+
+        // Improved section switching with animations
+        function showSection(sectionId) {
+            // Hide current section with fade out
+            const currentSectionElement = document.getElementById(currentSection);
+            if (currentSectionElement) {
+                currentSectionElement.style.opacity = '0';
+                currentSectionElement.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    currentSectionElement.classList.remove('active');
+                    
+                    // Show new section with fade in
+                    const newSectionElement = document.getElementById(sectionId);
+                    if (newSectionElement) {
+                        newSectionElement.classList.add('active');
+                        newSectionElement.style.opacity = '0';
+                        newSectionElement.style.transform = 'translateY(20px)';
+                        
+                        setTimeout(() => {
+                            newSectionElement.style.opacity = '1';
+                            newSectionElement.style.transform = 'translateY(0)';
+                        }, 50);
+                    }
+                }, 300);
+            }
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const clickedNav = Array.from(document.querySelectorAll('.nav-item')).find(item => 
+                item.textContent.toLowerCase().includes(sectionId.toLowerCase())
+            );
+            if (clickedNav) {
+                clickedNav.classList.add('active');
+            }
+            
+            currentSection = sectionId;
+            trackEvent('section_view', { section: sectionId });
+        }
+
+        // Enhanced image gallery functionality
+        function changeImage(imageType) {
+            const mainImage = document.getElementById('mainImage');
+            const imageIcons = {
+                'setup': '🔧',
+                'sensors': '📡',
+                'app': '📱',
+                'dashboard': '📊'
+            };
+            
+            // Update thumbnails
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            
+            // Update main image with animation
+            mainImage.style.transform = 'scale(0.95)';
+            mainImage.style.opacity = '0.7';
+            
+            setTimeout(() => {
+                const placeholder = mainImage.querySelector('.image-placeholder');
+                const icon = imageIcons[imageType] || '🌱';
+                placeholder.innerHTML = `
+                    <i class="fas fa-seedling" style="font-size: 3rem; margin-bottom: 1rem; color: var(--success-color);"></i><br>
+                    <strong>${imageType.charAt(0).toUpperCase() + imageType.slice(1)} View</strong><br>
+                    <small>Project ${imageType.toLowerCase()} demonstration</small>
+                `;
+                
+                mainImage.style.transform = 'scale(1)';
+                mainImage.style.opacity = '1';
+            }, 150);
+        }
+
+        // Enhanced code copying functionality
+        function copyCode(elementId) {
+            const codeBlock = document.getElementById(elementId);
+            const text = codeBlock.innerText || codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const button = event.target;
+                const originalContent = button.innerHTML;
+                
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                button.style.background = 'var(--success-color)';
+                button.style.transform = 'translateY(-2px)';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalContent;
+                    button.style.background = 'rgba(255, 255, 255, 0.1)';
+                    button.style.transform = 'translateY(0)';
+                }, 2000);
+                
+                showToast('Code copied to clipboard!', 'success');
+                trackEvent('code_copy', { element: elementId });
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                showToast('Failed to copy code', 'error');
+            });
+        }
+
+        // Enhanced like functionality
+        function toggleLike() {
+            isLiked = !isLiked;
+            likeCount += isLiked ? 1 : -1;
+            
+            const likeBtn = event.target;
+            likeBtn.innerHTML = isLiked 
+                ? '<i class="fas fa-heart"></i> Liked!' 
+                : '<i class="fas fa-star"></i> Like Project';
+            
+            likeBtn.style.background = isLiked 
+                ? 'linear-gradient(135deg, #ef4444, #dc2626)' 
+                : 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))';
+            
+            // Update like count in stats
+            const likesStat = document.querySelector('.stat-item:nth-child(3) span:last-child');
+            if (likesStat) {
+                likesStat.textContent = `${likeCount} likes`;
+            }
+            
+            // Animate button
+            likeBtn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                likeBtn.style.transform = 'scale(1)';
+            }, 150);
+            
+            showToast(isLiked ? 'Added to favorites!' : 'Removed from favorites', 'success');
+            trackEvent('project_like', { liked: isLiked });
+        }
+
+        // Enhanced sharing functionality
+        function shareProject() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Smart Agriculture Monitoring System - ElectroHub',
+                    text: 'Check out this amazing IoT project for smart farming with automated irrigation and mobile app control!',
+                    url: window.location.href
+                }).then(() => {
+                    showToast('Project shared successfully!', 'success');
+                    trackEvent('project_share', { method: 'native' });
+                }).catch(err => {
+                    console.log('Error sharing:', err);
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const shareData = {
+                    title: 'Smart Agriculture Monitoring System',
+                    url: window.location.href
+                };
+                
+                // Create share modal
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                    background: rgba(0,0,0,0.5); display: flex; align-items: center;
+                    justify-content: center; z-index: 1001;
+                `;
+                
+                modal.innerHTML = `
+                    <div style="background: white; padding: 2rem; border-radius: 1rem; max-width: 400px; width: 90%;">
+                        <h3 style="margin-bottom: 1rem;">Share Project</h3>
+                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                            <button onclick="shareOn('twitter')" style="padding: 0.75rem 1rem; border: none; border-radius: 0.5rem; background: #1da1f2; color: white; cursor: pointer;">
+                                <i class="fab fa-twitter"></i> Twitter
+                            </button>
+                            <button onclick="shareOn('linkedin')" style="padding: 0.75rem 1rem; border: none; border-radius: 0.5rem; background: #0077b5; color: white; cursor: pointer;">
+                                <i class="fab fa-linkedin"></i> LinkedIn
+                            </button>
+                            <button onclick="copyLink()" style="padding: 0.75rem 1rem; border: none; border-radius: 0.5rem; background: #666; color: white; cursor: pointer;">
+                                <i class="fas fa-link"></i> Copy Link
+                            </button>
+                        </div>
+                        <button onclick="closeModal()" style="margin-top: 1rem; padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 0.5rem; background: white; cursor: pointer; width: 100%;">
+                            Close
+                        </button>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                window.closeModal = () => {
+                    document.body.removeChild(modal);
+                };
+                
+                window.shareOn = (platform) => {
+                    const urls = {
+                        twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareData.title)}&url=${encodeURIComponent(shareData.url)}`,
+                        linkedin: `https://linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareData.url)}`
+                    };
+                    
+                    if (urls[platform]) {
+                        window.open(urls[platform], '_blank');
+                        trackEvent('project_share', { method: platform });
+                    }
+                    closeModal();
+                };
+                
+                window.copyLink = () => {
+                    navigator.clipboard.writeText(shareData.url);
+                    showToast('Link copied to clipboard!', 'success');
+                    trackEvent('project_share', { method: 'copy_link' });
+                    closeModal();
+                };
+            }
+        }
+
+        // Save project functionality
+        function saveProject() {
+            const saved = localStorage.getItem('savedProjects') || '[]';
+            const savedProjects = JSON.parse(saved);
+            const projectId = 'smart-agriculture-monitoring';
+            
+            const isAlreadySaved = savedProjects.includes(projectId);
+            
+            if (isAlreadySaved) {
+                const index = savedProjects.indexOf(projectId);
+                savedProjects.splice(index, 1);
+                showToast('Removed from saved projects', 'warning');
+            } else {
+                savedProjects.push(projectId);
+                showToast('Project saved successfully!', 'success');
+            }
+            
+            localStorage.setItem('savedProjects', JSON.stringify(savedProjects));
+            
+            const saveBtn = event.target;
+            saveBtn.innerHTML = isAlreadySaved 
+                ? '<i class="fas fa-bookmark"></i> Save' 
+                : '<i class="fas fa-bookmark-solid"></i> Saved';
+            
+            trackEvent('project_save', { saved: !isAlreadySaved });
+        }
+
+        // Report project functionality
+        function reportProject() {
+            if (confirm('Are you sure you want to report this project? Please only report content that violates our community guidelines.')) {
+                showToast('Thank you for your report. We will review it shortly.', 'warning');
+                trackEvent('project_report');
+            }
+        }
+
+        // Live sensor data simulation
+        function updateLiveSensorData() {
+            const sensors = {
+                'temp-value': { min: 20, max: 35, suffix: '°C', current: 24.5 },
+                'humidity-value': { min: 45, max: 85, suffix: '%', current: 68 },
+                'soil-value': { min: 30, max: 80, suffix: '%', current: 45 },
+                'light-value': { min: 20, max: 95, suffix: '%', current: 78 }
+            };
+            
+            Object.keys(sensors).forEach(sensorId => {
+                const element = document.getElementById(sensorId);
+                if (element) {
+                    const sensor = sensors[sensorId];
+                    const variation = (Math.random() - 0.5) * 4; // ±2 units
+                    sensor.current = Math.max(sensor.min, Math.min(sensor.max, sensor.current + variation));
+                    element.textContent = sensor.current.toFixed(1) + sensor.suffix;
+                }
+            });
+        }
+
+        // Comment functionality
+        function postComment() {
+            const textarea = document.getElementById('commentInput');
+            const comment = textarea.value.trim();
+            
+            if (comment.length > 10) {
+                // Simulate posting comment
+                showToast('Comment posted successfully!', 'success');
+                textarea.value = '';
+                textarea.dispatchEvent(new Event('input')); // Trigger validation
+                trackEvent('comment_post', { length: comment.length });
+            } else {
+                showToast('Comment must be at least 10 characters long', 'error');
+            }
+        }
+
+                // Demo video functionality
+        function playDemo() {
+            const videoContainer = document.querySelector('.video-container');
+            videoContainer.innerHTML = `
+                <div style="width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; color: white;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🎥</div>
+                        <div style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Demo Video Loading...</div>
+                        <div style="font-size: 0.875rem; opacity: 0.7;">This would load the actual project demonstration video</div>
+                        <div style="margin-top: 2rem;">
+                            <div style="width: 200px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 0 auto; position: relative;">
+                                <div style="width: 0%; height: 100%; background: #4f46e5; border-radius: 2px; transition: width 3s ease;" id="videoProgress"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Simulate loading progress
+            const progressBar = document.getElementById('videoProgress');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 2;
+                progressBar.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        videoContainer.innerHTML = `
+                            <div style="width: 100%; height: 100%; background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; text-align: center;">
+                                <div>
+                                    <div style="font-size: 4rem; margin-bottom: 1rem;">🎬</div>
+                                    <div style="font-size: 1.5rem; font-weight: 600;">Demo Video</div>
+                                    <div style="margin-top: 1rem; font-size: 1rem;">Smart Agriculture System in Action</div>
+                                    <div style="margin-top: 2rem;">
+                                        <button onclick="location.reload()" style="padding: 0.75rem 1.5rem; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 0.5rem; cursor: pointer; backdrop-filter: blur(10px);">
+                                            <i class="fas fa-redo"></i> Restart Demo
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }, 500);
+                }
+            }, 100);
+            
+            showToast('Demo video started', 'success');
+            trackEvent('demo_play');
+        }
+
+        // Toast notification system
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const content = document.getElementById('toastContent');
+            
+            content.textContent = message;
+            toast.className = `toast ${type} show`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Analytics tracking simulation
+        function trackEvent(eventName, data = {}) {
+            console.log(`Analytics: ${eventName}`, data);
+            // This would integrate with Google Analytics or similar service
+            if (window.gtag) {
+                window.gtag('event', eventName, data);
+            }
+        }
+
+        // Enhanced initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize comment form validation
+            const commentTextarea = document.getElementById('commentInput');
+            const postBtn = document.getElementById('postBtn');
+            
+            commentTextarea?.addEventListener('input', function() {
+                const isValid = this.value.trim().length > 10;
+                postBtn.disabled = !isValid;
+                postBtn.style.opacity = isValid ? '1' : '0.6';
+            });
+            
+            // Initialize live sensor data updates
+            setInterval(updateLiveSensorData, 5000);
+            
+            // Initialize smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Initialize intersection observer for animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe elements for scroll animations
+            document.querySelectorAll('.step, .spec-item, .component-item').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+            
+            // Initialize progress bar animation
+            setTimeout(() => {
+                const progressFill = document.querySelector('.progress-fill');
+                if (progressFill) {
+                    progressFill.style.width = '100%';
+                    setTimeout(() => {
+                        document.querySelector('.progress-text').textContent = '100% Complete - Ready for Deployment';
+                    }, 1000);
+                }
+            }, 2000);
+            
+            // Initialize keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Ctrl/Cmd + K for search (future feature)
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    showToast('Search feature coming soon!', 'info');
+                }
+                
+                // Escape to close modals
+                if (e.key === 'Escape') {
+                    const modals = document.querySelectorAll('[style*="position: fixed"]');
+                    modals.forEach(modal => {
+                        if (modal.style.zIndex > 1000) {
+                            modal.remove();
+                        }
+                    });
+                }
+            });
+            
+            // Initialize error handling for images
+            document.querySelectorAll('img').forEach(img => {
+                img.onerror = function() {
+                    this.style.display = 'none';
+                    const placeholder = this.parentElement.querySelector('.image-placeholder');
+                    if (placeholder) {
+                        placeholder.style.display = 'flex';
+                    }
+                };
+            });
+            
+            // Initialize service worker for offline functionality (future feature)
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js').then(() => {
+                    console.log('Service Worker registered successfully');
+                }).catch(err => {
+                    console.log('Service Worker registration failed:', err);
+                });
+            }
+            
+            // Initialize performance monitoring
+            if (window.performance && window.performance.mark) {
+                window.performance.mark('page-interactive');
+                
+                // Measure page load performance
+                window.addEventListener('load', () => {
+                    const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+                    trackEvent('page_load_time', { duration: loadTime });
+                });
+            }
+            
+            // Initialize dark mode detection
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                // Future: Add dark mode support
+                console.log('Dark mode preferred');
+            }
+            
+            // Initialize responsive behavior
+            const mediaQuery = window.matchMedia('(max-width: 768px)');
+            function handleMobileView(e) {
+                if (e.matches) {
+                    // Mobile-specific optimizations
+                    document.body.style.fontSize = '14px';
+                } else {
+                    document.body.style.fontSize = '16px';
+                }
+            }
+            
+            mediaQuery.addListener(handleMobileView);
+            handleMobileView(mediaQuery);
+            
+            // Initialize user preferences from localStorage
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.body.classList.add(savedTheme);
+            }
+            
+            // Track user engagement
+            let engagementTime = 0;
+            const engagementInterval = setInterval(() => {
+                engagementTime += 1000;
+                if (engagementTime % 30000 === 0) { // Every 30 seconds
+                    trackEvent('engagement', { time: engagementTime });
+                }
+            }, 1000);
+            
+            // Cleanup on page unload
+            window.addEventListener('beforeunload', () => {
+                clearInterval(engagementInterval);
+                trackEvent('page_exit', { engagement_time: engagementTime });
+            });
+            
+            // Initialize feature flags (future enhancement)
+            const features = {
+                realTimeData: true,
+                offlineMode: false,
+                darkMode: false,
+                voiceControl: false
+            };
+            
+            window.features = features;
+            
+            // Initialize accessibility improvements
+            const focusableElements = document.querySelectorAll('button, a, input, textarea, [tabindex]');
+            focusableElements.forEach(element => {
+                element.addEventListener('focus', function() {
+                    this.style.outline = '2px solid #4f46e5';
+                    this.style.outlineOffset = '2px';
+                });
+                
+                element.addEventListener('blur', function() {
+                    this.style.outline = 'none';
+                });
+            });
+            
+            console.log('🌱 Smart Agriculture Monitoring System - Enhanced Version Loaded');
+            console.log('✨ Features: Live sensor data, enhanced UI, mobile-responsive, accessibility-friendly');
+            console.log('🚀 Performance optimized with lazy loading and efficient animations');
+            
+            // Show welcome message for first-time visitors
+            if (!localStorage.getItem('visited_before')) {
+                setTimeout(() => {
+                    showToast('Welcome to the Smart Agriculture project! Explore all sections to learn more.', 'info');
+                    localStorage.setItem('visited_before', 'true');
+                }, 1500);
+            }
+        });
+
+        // Enhanced utility functions
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+
+        // Lazy loading for images (future enhancement)
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.remove('lazy');
+                    observer.unobserve(img);
+                }
+            });
+        });
+
+        // Export functions for external use (if needed)
+        window.smartAgricultureUtils = {
+            showSection,
+            changeImage,
+            copyCode,
+            toggleLike,
+            shareProject,
+            saveProject,
+            reportProject,
+            playDemo,
+            showToast,
+            trackEvent
+        };
+    </script>
+</body>
+</html>
